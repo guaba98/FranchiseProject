@@ -133,7 +133,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="soyeon\example.cs" />
     <Compile Include="woohyun\example.cs" />
-    <Compile Include="yunjae\example.cs" />
+    <Compile Include="yunjae\DBConnector.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
