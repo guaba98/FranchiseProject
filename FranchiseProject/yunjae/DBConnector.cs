@@ -1,5 +1,8 @@
 ﻿using Npgsql;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
 namespace FranchiseProject.yunjae
@@ -34,5 +37,47 @@ namespace FranchiseProject.yunjae
             }
         }
 
+        private void loadDB()
+        {
+            string query = $"SELECT * FROM public.\"TB_LOCATION\"";
+
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(CONNECTIONSTRING))
+                {
+                    conn.Open();
+                    NpgsqlCommand dbCommand = new NpgsqlCommand(query, conn);
+                    NpgsqlDataReader dbReader = dbCommand.ExecuteReader();
+
+                    List<object> myData = new List<object>();
+                    while (dbReader.Read())
+                    {
+                        var item = new
+                        {
+                            LOC_ID = dbReader["LOC_ID"],
+                            LOC_GU = dbReader["LOC_GU"],
+                            LOC_DONG = dbReader["LOC_DONG"],
+                            LOC_NAME = dbReader["LOC_NAME"],
+                            LOC_ADDR = dbReader["LOC_ADDR"],
+                            LOC_X = dbReader["LOC_X"],
+                            LOC_Y = dbReader["LOC_Y"]
+                        };
+
+                        myData.Add(item);
+                    }
+
+
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    string jsonData = serializer.Serialize(myData);
+                    Console.WriteLine(jsonData);
+                    string htmlTemplate = File.ReadAllText("kakaoMap.html");
+                    string finalHtml = htmlTemplate.Replace("{{JSON_DATA}}", jsonData);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
