@@ -123,10 +123,15 @@
         //    }
         //}
 
+
+        var markers = [];
+
         // set_marker 함수 정의
         function set_marker(data) {
             // 마커 이미지의 소스 URL 설정
             var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+            clearMarkers();
 
             // 데이터 배열을 순회하며 마커를 설정
             for (var i = 0; i < data.length; i++) {
@@ -143,8 +148,19 @@
                     title: data[i].title,      // 마커의 타이틀 설정
                     image: markerImage         // 마커의 이미지 설정
                 });
+                markers.push(marker);
             }
         }
+
+        // 모든 마커 삭제하는 함수
+        function clearMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = []; // 배열 비우기
+        }
+
+
     </script>
 </body>
 </html>
