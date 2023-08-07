@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <style type="text/css">
-html, body { width: 99%; height: 98%; }
+    html, body {
+        width: 99%;
+        height: 98%;
+    }
 </style>
 <html>
 <head>
@@ -9,45 +12,35 @@ html, body { width: 99%; height: 98%; }
     <title>지도 생성하기</title>
 </head>
 <body>
-<div id="map" style="width:100%; height:100%; "></div>
+    <div id="map" style="width:100%; height:100%; "></div>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9e002993cfb3567fac9baa79843a3852&libraries=services"></script>
+    <script>
+        var mapContainer = document.getElementById('map'), mapOption = { center: new kakao.maps.LatLng(35.1595454, 126.8526012), level: 6 };
+        var map = new kakao.maps.Map(mapContainer, mapOption);
 
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9e002993cfb3567fac9baa79843a3852&libraries=services"></script>
+        function moveTo(lat, lng) {
+            var loc = new kakao.maps.LatLng(lat, lng);
+            map.setCenter(loc);
+        }
 
-<script>
-    var mapContainer = document.getElementById('map'), mapOption = { center: new kakao.maps.LatLng(35.1595454, 126.8526012), level: 6 };
-	var map = new kakao.maps.Map(mapContainer, mapOption);
+        function panTo(lat, lng) {
+            var loc = new kakao.maps.LatLng(lat, lng);
+            map.panTo(loc);
+        }
 
-	function moveTo(lat, lng) {
-	    var loc = new kakao.maps.LatLng(lat, lng);
-	    map.setCenter(loc);
-	}
+        function zoomIn() {
+            var level = map.getLevel();
+            map.setLevel(level - 1);
+        }
 
-	function panTo(lat, lng) {
-	    var loc = new kakao.maps.LatLng(lat, lng);
-        map.panTo(loc);
+        function zoomOut() {
+            var level = map.getLevel();
+            map.setLevel(level + 1);
+        }
 
-        // 지도에 마커를 생성하고 표시한다
-        var marker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(lat, lng), // 마커의 좌표
-            map: map // 마커를 표시할 지도 객체
-        });
-	}
-
-	function zoomIn()
-	{
-		var level = map.getLevel();
-		map.setLevel(level-1);
-	}
-
-	function zoomOut()
-	{
-		var level = map.getLevel();
-		map.setLevel(level+1);
-    }
-
-    function set_marker()
-    {
-        // 마커를 표시할 위치와 title 객체 배열입니다 (테스트 테스트)
+        //function set_marker()
+        //{
+        //    // 마커를 표시할 위치와 title 객체 배열입니다 (테스트 테스트)
         var positions = [
             {
                 title: '살레시오고등학교',
@@ -67,44 +60,91 @@ html, body { width: 99%; height: 98%; }
             //}
         ];
 
-        // 마커 이미지의 이미지 주소입니다
-        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+        //    // 마커 이미지의 이미지 주소입니다
+        //    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
-        for (var i = 0; i < positions.length; i++) {
+        //    for (var i = 0; i < positions.length; i++) {
 
-            // 마커 이미지의 이미지 크기 입니다
-            var imageSize = new kakao.maps.Size(24, 35);
+        //        // 마커 이미지의 이미지 크기 입니다
+        //        var imageSize = new kakao.maps.Size(24, 35);
 
-            // 마커 이미지를 생성합니다    
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        //        // 마커 이미지를 생성합니다
+        //        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-                map: map, // 마커를 표시할 지도
-                position: positions[i].latlng, // 마커를 표시할 위치
-                title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                image: markerImage // 마커 이미지 
-            });
+        //        // 마커를 생성합니다
+        //        var marker = new kakao.maps.Marker({
+        //            map: map, // 마커를 표시할 지도
+        //            position: positions[i].latlng, // 마커를 표시할 위치
+        //            title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        //            image: markerImage // 마커 이미지
+        //        });
+        //    }
+        //}
+        //function set_marker(data) {
+        //    // 마커 이미지의 이미지 주소입니다
+        //    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+        //    // 만약 data가 하나의 객체만 전달되면 배열 형태로 변환합니다.
+        //    if (!Array.isArray(data)) {
+        //        data = [data];
+        //    }
+
+        //    // positions 배열은 이제 data를 기반으로 생성합니다.
+        //    var positions = data.map(function (item) {
+        //        return {
+        //            title: item.FACILITY_NAME,
+        //            latlng: new kakao.maps.LatLng(item.FACILITY_X, item.FACILITY_Y)
+        //        };
+        //    });
+        //    var positions = [
+        //        {
+        //            title: '살레시오고등학교',
+        //            latlng: new kakao.maps.LatLng(35.216132, 126.8917223)
+        //        },
+        //        {
+        //            title: '광주숭일중학교',
+        //            latlng: new kakao.maps.LatLng(35.2179968, 126.8968229)
+        //        }]
+
+        //    for (var i = 0; i < positions.length; i++) {
+        //        // 마커 이미지의 이미지 크기 입니다
+        //        var imageSize = new kakao.maps.Size(24, 35);
+
+        //        // 마커 이미지를 생성합니다
+        //        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+        //        // 마커를 생성합니다
+        //        var marker = new kakao.maps.Marker({
+        //            map: map, // 마커를 표시할 지도
+        //            position: positions[i].latlng, // 마커를 표시할 위치
+        //            title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        //            image: markerImage // 마커 이미지
+        //        });
+        //    }
+        //}
+
+        // set_marker 함수 정의
+        function set_marker(data) {
+            // 마커 이미지의 소스 URL 설정
+            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+            // 데이터 배열을 순회하며 마커를 설정
+            for (var i = 0; i < data.length; i++) {
+                // 마커 이미지의 크기 설정
+                var imageSize = new kakao.maps.Size(24, 35);
+
+                // 마커 이미지 객체 생성
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+                // 지도 위에 마커 생성 및 설정
+                var marker = new kakao.maps.Marker({
+                    map: map,                  // 마커가 표시될 지도 객체 설정
+                    position: data[i].latlng,  // 마커의 위치 설정 (위도와 경도 정보)
+                    title: data[i].title,      // 마커의 타이틀 설정
+                    image: markerImage         // 마커의 이미지 설정
+                });
+            }
         }
-    }
-
-	function geo(address) {  // "송파구 가락동 10-1", "동남로 12길" 형태.
-		var geocoder = new kakao.maps.services.Geocoder();
-
-        geocoder.addressSearch(address, function (result, status)
-        {
-		     if (status === kakao.maps.services.Status.OK) {
-		        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-		        var marker = new kakao.maps.Marker({ map: map, position: coords });
-		        var infowindow = new kakao.maps.InfoWindow({
-		            content: '<div style="width:150px;text-align:center;padding:6px 0;">여기!!</div>'
-		        });
-		        infowindow.open(map, marker);
-		        map.setCenter(coords);
-		    }
-		});
-    }
-
-</script>
+    </script>
 </body>
 </html>
