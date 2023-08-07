@@ -5,11 +5,69 @@
         width: 99%;
         height: 98%;
     }
+
+    .wrap {
+        position: relative; /* 화살표(::after)의 위치를 부모 요소 기준으로 설정하기 위함 */
+        background-color: rgba(255, 234, 167, 0.9); /* 연한 주황/베이지 계열의 투명 배경 */
+        border: 1px solid rgb(255, 194, 0); /* 주어진 마커 색상으로 테두리 설정 */
+        border-radius: 5px; /* 둥근 모서리 */
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* 약간의 그림자 효과 */
+    }
+
+    .wrap .info .title {
+        color: rgb(0, 0, 0); /* 검은색 제목 */
+        background-color: rgb(255, 194, 0); /* 주어진 마커 색상으로 제목 배경 */
+        padding: 3px 5px; /* 제목의 안쪽 여백 */
+        border-radius: 3px 3px 0 0; /* 상단 둥근 모서리 */
+        font-family: 'Nanum Gothic', sans-serif;
+    }
+
+    .wrap .info .body .desc {
+        color: rgb(84, 84, 84); /* 어두운 회색 텍스트 */
+        padding: 5px; /* 설명의 안쪽 여백 */
+        font-family: 'Nanum Gothic', sans-serif;
+    }
+
+    .wrap::after {
+        content: "";
+        position: absolute;
+        bottom: -10px; /* 화살표의 위치. 이 값을 조절하면 화살표 위치 변경 가능 */
+        left: 50%; /* 가운데 정렬을 위함 */
+        transform: translateX(-50%); /* 화살표를 완벽하게 중앙으로 위치시키기 위한 작업 */
+        width: 0;
+        height: 0;
+        border: 1px solid rgb(255, 194, 0); /* 주어진 마커 색상으로 테두리 설정 */
+        border-left: 10px solid transparent; /* 화살표의 크기와 모양 조절 */
+        border-right: 10px solid transparent; /* 화살표의 크기와 모양 조절 */
+        border-top: 10px solid rgba(255, 234, 167, 0.9); /* 화살표의 색상. 배경색과 동일하게 설정 */
+    }
+
+    .info .close { /*닫기버튼*/
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        background: url('close-icon-url.png') no-repeat center; /* 닫기 아이콘 이미지 URL찾아야됨 나중에 나중에 */
+        cursor: pointer;
+    }
+
+    .info .body .desc {
+        margin-top: 5px;
+    }
+
+    .ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 </style>
+
 <html>
 <head>
     <meta charset="utf-8">
     <title>지도 생성하기</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet"
 </head>
 <body>
     <div id="map" style="width:100%; height:100%; "></div>
@@ -18,139 +76,28 @@
         var mapContainer = document.getElementById('map'), mapOption = { center: new kakao.maps.LatLng(35.1595454, 126.8526012), level: 6 };
         var map = new kakao.maps.Map(mapContainer, mapOption);
 
-        function moveTo(lat, lng) {
+        function moveTo(lat, lng) { //특정위치로 이동
             var loc = new kakao.maps.LatLng(lat, lng);
             map.setCenter(loc);
         }
 
-        function panTo(lat, lng) {
+        function panTo(lat, lng) { // 부드럽게 이동
             var loc = new kakao.maps.LatLng(lat, lng);
             map.panTo(loc);
         }
 
-        function zoomIn() {
+        function zoomIn() //줌인
+        {
             var level = map.getLevel();
             map.setLevel(level - 1);
         }
 
-        function zoomOut() {
+        function zoomOut() //줌아웃
+        {
             var level = map.getLevel();
             map.setLevel(level + 1);
         }
 
-        //function set_marker()
-        //{
-        //    // 마커를 표시할 위치와 title 객체 배열입니다 (테스트 테스트)
-        var positions = [
-            {
-                title: '살레시오고등학교',
-                latlng: new kakao.maps.LatLng(35.216132, 126.8917223)
-            },
-            {
-                title: '광주숭일중학교',
-                latlng: new kakao.maps.LatLng(35.2179968, 126.8968229)
-            },
-            //{
-            //    title: '텃밭',
-            //    latlng: new kakao.maps.LatLng(33.450879, 126.569940)
-            //},
-            //{
-            //    title: '근린공원',
-            //    latlng: new kakao.maps.LatLng(33.451393, 126.570738)
-            //}
-        ];
-
-        //    // 마커 이미지의 이미지 주소입니다
-        //    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-        //    for (var i = 0; i < positions.length; i++) {
-
-        //        // 마커 이미지의 이미지 크기 입니다
-        //        var imageSize = new kakao.maps.Size(24, 35);
-
-        //        // 마커 이미지를 생성합니다
-        //        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-        //        // 마커를 생성합니다
-        //        var marker = new kakao.maps.Marker({
-        //            map: map, // 마커를 표시할 지도
-        //            position: positions[i].latlng, // 마커를 표시할 위치
-        //            title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-        //            image: markerImage // 마커 이미지
-        //        });
-        //    }
-        //}
-        //function set_marker(data) {
-        //    // 마커 이미지의 이미지 주소입니다
-        //    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-        //    // 만약 data가 하나의 객체만 전달되면 배열 형태로 변환합니다.
-        //    if (!Array.isArray(data)) {
-        //        data = [data];
-        //    }
-
-        //    // positions 배열은 이제 data를 기반으로 생성합니다.
-        //    var positions = data.map(function (item) {
-        //        return {
-        //            title: item.FACILITY_NAME,
-        //            latlng: new kakao.maps.LatLng(item.FACILITY_X, item.FACILITY_Y)
-        //        };
-        //    });
-        //    var positions = [
-        //        {
-        //            title: '살레시오고등학교',
-        //            latlng: new kakao.maps.LatLng(35.216132, 126.8917223)
-        //        },
-        //        {
-        //            title: '광주숭일중학교',
-        //            latlng: new kakao.maps.LatLng(35.2179968, 126.8968229)
-        //        }]
-
-        //    for (var i = 0; i < positions.length; i++) {
-        //        // 마커 이미지의 이미지 크기 입니다
-        //        var imageSize = new kakao.maps.Size(24, 35);
-
-        //        // 마커 이미지를 생성합니다
-        //        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-        //        // 마커를 생성합니다
-        //        var marker = new kakao.maps.Marker({
-        //            map: map, // 마커를 표시할 지도
-        //            position: positions[i].latlng, // 마커를 표시할 위치
-        //            title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-        //            image: markerImage // 마커 이미지
-        //        });
-        //    }
-        //}
-
-
-        var markers = [];
-
-        // set_marker 함수 정의
-        function set_marker(data) {
-            // 마커 이미지의 소스 URL 설정
-            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-            clearMarkers();
-
-            // 데이터 배열을 순회하며 마커를 설정
-            for (var i = 0; i < data.length; i++) {
-                // 마커 이미지의 크기 설정
-                var imageSize = new kakao.maps.Size(24, 35);
-
-                // 마커 이미지 객체 생성
-                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-                // 지도 위에 마커 생성 및 설정
-                var marker = new kakao.maps.Marker({
-                    map: map,                  // 마커가 표시될 지도 객체 설정
-                    position: data[i].latlng,  // 마커의 위치 설정 (위도와 경도 정보)
-                    title: data[i].title,      // 마커의 타이틀 설정
-                    image: markerImage         // 마커의 이미지 설정
-                });
-                markers.push(marker);
-            }
-        }
 
         // 모든 마커 삭제하는 함수
         function clearMarkers() {
@@ -159,6 +106,100 @@
             }
             markers = []; // 배열 비우기
         }
+
+
+        // 체크박스 타입별로 마커를 관리하기 위한 객체
+        var markersByType = {};
+
+        //마커 추가하기
+        function add_markers(type, data) {
+            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; // 마커 이미지 원본
+
+            if (!markersByType[type]) {
+                markersByType[type] = [];
+            }
+            // for문 돌려서 마커 하나씩 추가해주기
+            for (var i = 0; i < data.length; i++) {
+                var imageSize = new kakao.maps.Size(24, 35); // 마커 크기
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 이미지 사이즈
+                var addr = data[i].addr; // 주소
+
+                var marker = new kakao.maps.Marker({
+                    map: map, // 담길 지도
+                    position: data[i].latlng, // 위경도
+                    title: data[i].title, // 상호명
+                    image: markerImage // 마커 이미지
+                });
+
+                // 마커에 담길 내용
+                var content = '<div class="wrap">' +
+                    '    <div class="info">' +
+                    '        <div class="title">' +
+                    data[i].title +
+                    '            <div class="close" onclick="closeOverlay(' + i + ')" title="닫기"></div>' +
+                    '        </div>' +
+                    '        <div class="body">' +
+                    '            <div class="desc">' +
+                    '                <div class="ellipsis">' + data[i].addr + '</div>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '    </div>' +
+                    '</div>';
+
+                //var overlay = new kakao.maps.CustomOverlay({
+                //    content: content,
+                //    position: marker.getPosition()
+                //});
+                var overlay = new kakao.maps.CustomOverlay({
+                    content: content,
+                    position: marker.getPosition(),
+                    yAnchor: 1.75  // 이 값을 조정하여 오버레이의 위치를 위로 올리거나 내릴 수 있음 -> 깎아야 함
+                });
+
+                markersByType[type].push({ marker: marker, overlay: overlay });
+
+                (function (type, marker, overlay) {
+                    kakao.maps.event.addListener(marker, 'click', function (mouseEvent) {
+                        for (var j = 0; j < markersByType[type].length; j++) {
+                            markersByType[type][j].overlay.setMap(null); // 모든 오버레이 숨기기
+                        }
+                        overlay.setMap(map); // 클릭한 마커의 오버레이만 보이기
+                    });
+                })(type, marker, overlay);
+            }
+        }
+
+        // 마커의 커스텀 오버레이를 닫기 위해 호출되는 함수
+        function closeOverlay(index) {
+            if (markersByType[type] && markersByType[type][index]) {
+                markersByType[type][index].overlay.setMap(null);
+            }
+        }
+
+        // 사용안함(hover 할때 사용하는 부분)
+        function makeOverListener(map, marker, infowindow) {
+            return function () {
+                infowindow.open(map, marker);
+            };
+        }
+        function makeOutListener(infowindow) {
+            return function () {
+                infowindow.close();
+            };
+        }
+
+        // 마커 모두 지우기
+        function remove_markers(type) {
+            if (markersByType[type]) {
+                for (var i = 0; i < markersByType[type].length; i++) {
+                    markersByType[type][i].setMap(null);
+                }
+                markersByType[type] = [];
+            }
+        }
+
+
+
 
 
     </script>
