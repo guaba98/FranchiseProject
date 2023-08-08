@@ -4,6 +4,7 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -24,8 +25,6 @@ namespace FranchiseProject
         {
             InitializeComponent();
             InitializeComboBoxes();
-
-
         }
 
         // DB
@@ -477,5 +476,11 @@ namespace FranchiseProject
             //문화시설
             show_checkbox_markers(sender as CheckBox);
         }
+
+        private void resultButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

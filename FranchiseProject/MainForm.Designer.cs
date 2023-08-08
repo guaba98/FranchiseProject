@@ -402,13 +402,14 @@ namespace FranchiseProject
             // 
             // homeButton
             // 
+            this.homeButton.BackColor = System.Drawing.Color.Transparent;
             this.homeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("homeButton.BackgroundImage")));
             this.homeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.homeButton.Location = new System.Drawing.Point(14, 11);
             this.homeButton.Name = "homeButton";
             this.homeButton.Size = new System.Drawing.Size(50, 50);
             this.homeButton.TabIndex = 28;
-            this.homeButton.UseVisualStyleBackColor = true;
+            this.homeButton.UseVisualStyleBackColor = false;
             // 
             // flatComboBox2
             // 
@@ -447,6 +448,7 @@ namespace FranchiseProject
             this.resultButton.Text = "종합 결과 보기";
             this.resultButton.TextColor = System.Drawing.Color.White;
             this.resultButton.UseVisualStyleBackColor = false;
+            this.resultButton.Click += new System.EventHandler(this.resultButton_Click);
             // 
             // MainForm
             // 
