@@ -13,18 +13,17 @@ using System.Windows.Forms;
 
 namespace FranchiseProject
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         // 지역명, 위도, 경도  (ex. "문정동", "37.412412", "124.512512")
         List<Tuple<string, double, double>> tuples = new List<Tuple<string, double, double>>();
         // DB 불러오기
         private const string ConnectionString = "Host=10.10.20.103;Username=postgres;Password=1234;Database=franchise";
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             InitializeComboBoxes();
-
         }
 
         // DB
@@ -76,7 +75,7 @@ namespace FranchiseProject
                 {
                     query += $" WHERE {criteria}";
                 }
-
+                Console.WriteLine(query);
                 using (var cmd = new NpgsqlCommand(query, connection))
                 {
                     using (var reader = cmd.ExecuteReader())
@@ -162,9 +161,66 @@ namespace FranchiseProject
             }
         }
 
+        private void update_tabpage(string guName, string dongName)
+        {
+            // 현재 comboBox2에서 선택된 동(Dong) 이름을 가져옴
+            string dong = comboBox2.Text;
+
+            // DB로부터 가져올 칼럼 이름들을 리스트로 정의
+            var columns = new List<string> { "DEAL_TYPE", "DEAL_USE", "DEAL_GU", "DEAL_DONG", "DEAL_ADDR", "DEAL_DEPOSIT", "DEAL_PRICE", "DEAL_RENT_PRICE", "DEAL_SPACE" };
+
+            // DB로부터 지정된 조건의 레코드들을 가져옴
+            var data = GetValuesFromMultipleColumns("TB_DEAL", columns, $"\"DEAL_DONG\" = '{dongName}'");
+
+            // 기존 리스트 뷰 아이템을 모두 지움
+            listView1.Items.Clear();
+            listView2.Items.Clear();
+
+            // 가져온 각 행(레코드)에 대해 아래의 작업을 수행
+            foreach (var row in data)
+            {
+                // 해당 행에서 필요한 데이터를 가져옴
+                string dealType = row["DEAL_TYPE"].ToString();
+                string dealUse = row["DEAL_USE"].ToString();
+                string dealDeposit = row["DEAL_DEPOSIT"].ToString();
+                string dealPrice = row["DEAL_PRICE"].ToString();
+                string dealRentprice = row["DEAL_RENT_PRICE"].ToString();
+                string dealSpace = row["DEAL_SPACE"].ToString();
+
+                // 거래 유형이 '매매'인 경우
+                if (dealType == "매매")
+                {
+                    // listView1에 해당 아이템을 추가
+                    var item = new ListViewItem(dealType);
+                    item.SubItems.Add($"{dealUse}");
+                    item.SubItems.Add($"{dealPrice}");
+                    item.SubItems.Add($"{dealSpace}");
+                    listView1.Items.Add(item);
+                }
+
+                // 거래 유형이 '월세'인 경우
+                else if (dealType == "월세")
+                {
+                    // listView2에 해당 아이템을 추가
+                    var item = new ListViewItem(dealType);
+                    item.SubItems.Add($"{dealUse}");
+                    item.SubItems.Add($"{dealDeposit}");
+                    item.SubItems.Add($"{dealRentprice}");
+                    item.SubItems.Add($"{dealSpace}");
+                    listView2.Items.Add(item);
+                }
+
+                // 출력 확인용: 현재 행의 모든 열(칼럼) 데이터를 콘솔에 출력
+                foreach (var keyValuePair in row)
+                {
+                    Console.WriteLine($"{keyValuePair.Key}: {keyValuePair.Value}");
+                }
+            }
+        }
+
 
         // 지도
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
 
         {
             // 로드될 때 생성
@@ -243,6 +299,36 @@ namespace FranchiseProject
             // 위도, 경도 불러와서 이동
             object[] arr = new object[] { sel.Item3, sel.Item2 }; // 위도, 경도
             object res = webBrowser1.Document.InvokeScript("panTo", arr);
+            update_tabpage(gu, dong);
+
+            // 올리브영 위치 찍기
+            var columns = new List<string> { "LOC_NAME", "LOC_ADDR", "LOC_X", "LOC_Y" };
+            var condition = $"\"LOC_GU\" = '{gu}' AND \"LOC_DONG\" = \'{dong}\'";
+
+            var data = GetValuesFromMultipleColumns("TB_LOCATION", columns, condition, false);
+            StringBuilder jsCode = new StringBuilder();
+            jsCode.AppendLine($"remove_markers('olive_young');");
+
+            if (data != null && data.Count > 0)
+            {
+                jsCode.AppendLine($"add_markers('olive_young', [");
+                foreach (var row in data)
+                {
+                    string name = row["LOC_NAME"].ToString(); // 업체명
+                    string addr = row["LOC_ADDR"].ToString();  // 주소 
+                    string x = row["LOC_X"].ToString(); //x좌표
+                    string y = row["LOC_Y"].ToString(); //y좌표
+                    Console.WriteLine(name + addr + x + y); // 확인용
+
+                    // 각 시설의 정보를 바탕으로 JavaScript 코드를 추가
+                    jsCode.AppendLine($"{{ title: '{name}', addr: '{addr}', latlng: new kakao.maps.LatLng({x}, {y}) }},");
+                }
+                jsCode.AppendLine("]);");
+                Console.WriteLine(jsCode.ToString());
+
+                // 생성된 JavaScript 코드를 웹 브라우저 컨트롤을 통해 실행
+                webBrowser1.Document.InvokeScript("eval", new object[] { jsCode.ToString() });
+            }
 
 
         }
@@ -319,7 +405,7 @@ namespace FranchiseProject
 
 
 
-
+        // 다중이용시설 체크박스 이벤트 연결
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             //편의점

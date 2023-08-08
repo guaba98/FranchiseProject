@@ -14,42 +14,44 @@
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* 약간의 그림자 효과 */
     }
 
-    .wrap .info .title {
-        color: rgb(0, 0, 0); /* 검은색 제목 */
-        background-color: rgb(255, 194, 0); /* 주어진 마커 색상으로 제목 배경 */
-        padding: 3px 5px; /* 제목의 안쪽 여백 */
-        border-radius: 3px 3px 0 0; /* 상단 둥근 모서리 */
-        font-family: 'Nanum Gothic', sans-serif;
-    }
+        .wrap .info .title {
+            color: rgb(0, 0, 0); /* 검은색 제목 */
+            background-color: rgb(255, 194, 0); /* 주어진 마커 색상으로 제목 배경 */
+            padding: 3px 5px; /* 제목의 안쪽 여백 */
+            border-radius: 3px 3px 0 0; /* 상단 둥근 모서리 */
+            font-family: 'Nanum Gothic', sans-serif;
+        }
 
-    .wrap .info .body .desc {
-        color: rgb(84, 84, 84); /* 어두운 회색 텍스트 */
-        padding: 5px; /* 설명의 안쪽 여백 */
-        font-family: 'Nanum Gothic', sans-serif;
-    }
+        .wrap .info .body .desc {
+            color: rgb(84, 84, 84); /* 어두운 회색 텍스트 */
+            padding: 5px; /* 설명의 안쪽 여백 */
+            font-family: 'Nanum Gothic', sans-serif;
+        }
 
-    .wrap::after {
-        content: "";
+        .wrap::after {
+            content: "";
+            position: absolute;
+            bottom: -10px; /* 화살표의 위치. 이 값을 조절하면 화살표 위치 변경 가능 */
+            left: 50%; /* 가운데 정렬을 위함 */
+            transform: translateX(-50%); /* 화살표를 완벽하게 중앙으로 위치시키기 위한 작업 */
+            width: 0;
+            height: 0;
+            border: 1px solid rgb(255, 194, 0); /* 주어진 마커 색상으로 테두리 설정 */
+            border-left: 10px solid transparent; /* 화살표의 크기와 모양 조절 */
+            border-right: 10px solid transparent; /* 화살표의 크기와 모양 조절 */
+            border-top: 10px solid rgba(255, 234, 167, 0.9); /* 화살표의 색상. 배경색과 동일하게 설정 */
+            border-top-color: inherit; /* 배경색과 동일하게 설정, JavaScript에서 변경되면 이에 맞춰 변경됨 */
+        }
+
+
+    .info .close {
         position: absolute;
-        bottom: -10px; /* 화살표의 위치. 이 값을 조절하면 화살표 위치 변경 가능 */
-        left: 50%; /* 가운데 정렬을 위함 */
-        transform: translateX(-50%); /* 화살표를 완벽하게 중앙으로 위치시키기 위한 작업 */
-        width: 0;
-        height: 0;
-        border: 1px solid rgb(255, 194, 0); /* 주어진 마커 색상으로 테두리 설정 */
-        border-left: 10px solid transparent; /* 화살표의 크기와 모양 조절 */
-        border-right: 10px solid transparent; /* 화살표의 크기와 모양 조절 */
-        border-top: 10px solid rgba(255, 234, 167, 0.9); /* 화살표의 색상. 배경색과 동일하게 설정 */
-    }
-
-    .info .close { /*닫기버튼*/
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 20px;
-        height: 20px;
-        background: url('close-icon-url.png') no-repeat center; /* 닫기 아이콘 이미지 URL찾아야됨 나중에 나중에 */
-        cursor: pointer;
+        top: 5px;
+        right: 5px;
+        color: #888;
+        width: 17px;
+        height: 17px;
+        background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
     }
 
     .info .body .desc {
@@ -62,12 +64,10 @@
         white-space: nowrap;
     }
 </style>
-
 <html>
 <head>
     <meta charset="utf-8">
     <title>지도 생성하기</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet"
 </head>
 <body>
     <div id="map" style="width:100%; height:100%; "></div>
@@ -111,16 +111,88 @@
         // 체크박스 타입별로 마커를 관리하기 위한 객체
         var markersByType = {};
 
-        //마커 추가하기
+
+        // 마커 추가하기
         function add_markers(type, data) {
+
             var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; // 마커 이미지 원본
+
+
+
+            var infoBackgroundColor = "rgba(255, 234, 167, 0.9)"; // 기본 배경색
+            var titleBackgroundColor = "rgb(255, 194, 0)"; // 기본 제목 배경색
+            var arrowColor = "rgba(255, 234, 167, 0.9)"; // 화살표의 기본 색상
+
+
+
+            //if (type === "편의점") {
+            //    imagesrc = "https://ifh.cc/g/xosnnw.png";
+            //}
+            //else if (type === "카페") {
+            //    imagesrc = "https://ifh.cc/g/asthzv.png";
+            //}
+            //else if (type === "은행") {
+            //    imagesrc = "https://ifh.cc/g/oksgox.png";
+            //}
+            //else if (type === "쇼핑몰") {
+            //    imagesrc = "https://ifh.cc/g/6lnbgc.png";
+            //}
+            //else if (type === "병원") {
+            //    imagesrc = "https://ifh.cc/g/whpbdd.png";
+            //}
+            //else if (type === "음식점") {
+            //    imagesrc = "https://ifh.cc/g/ayv1oq.png";
+            //}
+            //else if (type === "공영주차장") {
+            //    imagesrc = "https://ifh.cc/g/bcopkt.png";
+            //}
+            //else if (type === "중/고등학교") {
+            //    imagesrc = "https://ifh.cc/g/lnpzaf.png";
+            //}
+            //else if (type === "대학교") {
+            //    imagesrc = "https://ifh.cc/g/bxcy85.png";
+            //}
+            //else if (type === "문화시설") {
+            //    imagesrc = "https://ifh.cc/g/w6dtzp.png";
+            //}
+            var imageSize = new kakao.maps.Size(45, 45); // 마커 크기
+
+            // 타입별로 이미지 URL을 객체에 저장
+            var imageSrcByType = {
+                "편의점": "https://ifh.cc/g/xosnNw.png",
+                "카페": "https://ifh.cc/g/aSthzv.png",
+                "은행": "https://ifh.cc/g/okSGox.png",
+                "쇼핑몰": "https://ifh.cc/g/6Lnbgc.png",
+                "병원": "https://ifh.cc/g/WHpbDd.png",
+                "음식점": "https://ifh.cc/g/Ayv1Oq.png",
+                "공영주차장": "https://ifh.cc/g/BCOpkT.png",
+                "중/고등학교": "https://ifh.cc/g/lnpZAF.png",
+                "대학교": "https://ifh.cc/g/BXcY85.png",
+                "문화시설": "https://ifh.cc/g/w6dTZP.png",
+                "olive_young": "https://static.oliveyoung.co.kr/pc-static-root/image/store/point_way.png"
+            };
+
+            //해당 타입의 이미지 URL 가져오기
+            var imageSrc = imageSrcByType[type];
+
+
+            // type이 'olive_young'일 경우 변경사항
+            if (type === "olive_young") {
+                imageSrc = "https://static.oliveyoung.co.kr/pc-static-root/image/store/point_way.png"; // 올리브영 마커
+                infoBackgroundColor = "rgba(230, 248, 210, 0.9)"; // 연두색의 연한 톤 배경색
+                titleBackgroundColor = "rgb(155, 206, 38)"; // 연두색
+                arrowColor = "rgba(230, 248, 210, 0.9)"; // 연두색의 연한 톤 화살표 색상
+                var imageSize = new kakao.maps.Size(24, 35); // 마커 크기
+            }
+
 
             if (!markersByType[type]) {
                 markersByType[type] = [];
             }
+
             // for문 돌려서 마커 하나씩 추가해주기
             for (var i = 0; i < data.length; i++) {
-                var imageSize = new kakao.maps.Size(24, 35); // 마커 크기
+
                 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 이미지 사이즈
                 var addr = data[i].addr; // 주소
 
@@ -132,11 +204,11 @@
                 });
 
                 // 마커에 담길 내용
-                var content = '<div class="wrap">' +
-                    '    <div class="info">' +
-                    '        <div class="title">' +
+                var content = '<div class="wrap" style="background-color:' + infoBackgroundColor + '; border-color:' + titleBackgroundColor + '">' +
+                    '    <div class="info" style="background-color:' + infoBackgroundColor + '">' +
+                    '        <div class="title" style="background-color:' + titleBackgroundColor + '">' +
                     data[i].title +
-                    '            <div class="close" onclick="closeOverlay(' + i + ')" title="닫기"></div>' +
+                    '            <div class="close" onclick="closeOverlay(\'' + type + '\', ' + i + ')" title="닫기"></div>' +
                     '        </div>' +
                     '        <div class="body">' +
                     '            <div class="desc">' +
@@ -146,16 +218,14 @@
                     '    </div>' +
                     '</div>';
 
-                //var overlay = new kakao.maps.CustomOverlay({
-                //    content: content,
-                //    position: marker.getPosition()
-                //});
+                // 오버레이(뒤에 담기는 메세지박스)
                 var overlay = new kakao.maps.CustomOverlay({
                     content: content,
                     position: marker.getPosition(),
                     yAnchor: 1.75  // 이 값을 조정하여 오버레이의 위치를 위로 올리거나 내릴 수 있음 -> 깎아야 함
                 });
 
+                // 마커와 오버레이 설정해 줌
                 markersByType[type].push({ marker: marker, overlay: overlay });
 
                 (function (type, marker, overlay) {
@@ -169,12 +239,15 @@
             }
         }
 
-        // 마커의 커스텀 오버레이를 닫기 위해 호출되는 함수
-        function closeOverlay(index) {
+        /*여기서 오류가 뜸 여기서 오류가 뜸 -- 해결*/
+        //마커의 커스텀 오버레이를 닫기 위해 호출되는 함수
+
+        function closeOverlay(type, index) {
             if (markersByType[type] && markersByType[type][index]) {
                 markersByType[type][index].overlay.setMap(null);
             }
         }
+
 
         // 사용안함(hover 할때 사용하는 부분)
         function makeOverListener(map, marker, infowindow) {
@@ -188,15 +261,20 @@
             };
         }
 
+
         // 마커 모두 지우기
         function remove_markers(type) {
             if (markersByType[type]) {
                 for (var i = 0; i < markersByType[type].length; i++) {
-                    markersByType[type][i].setMap(null);
+                    markersByType[type][i].marker.setMap(null); // 변경된 부분
+                    if (markersByType[type][i].overlay) { // overlay도 존재한다면
+                        markersByType[type][i].overlay.setMap(null); // overlay도 지웁니다.
+                    }
                 }
                 markersByType[type] = [];
             }
         }
+
 
 
 
