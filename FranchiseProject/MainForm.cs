@@ -24,6 +24,8 @@ namespace FranchiseProject
         {
             InitializeComponent();
             InitializeComboBoxes();
+
+
         }
 
         // DB
@@ -137,34 +139,43 @@ namespace FranchiseProject
         {
             //콤보박스
             string[] data = { "북구", "서구", "동구", "남구", "광산구" };
-            comboBox1.Items.AddRange(data); // 콤보박스에 자료 넣기
-            comboBox1.SelectedIndex = 0; // 첫번째 아이템 선택
+            flatComboBox1.Items.AddRange(data); // 콤보박스에 자료 넣기
+            flatComboBox1.SelectedIndex = 0; // 첫번째 아이템 선택
         }
-        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+
+        //private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        //{
+        //    // 첫 번째 콤보박스의 선택에 따라 두 번째 콤보박스의 항목을 설정
+        //    string selectedGu = comboBox1.SelectedItem.ToString();
+        //    update_combobox2(selectedGu);
+        //    comboBox2.SelectedIndex = 0;
+        //}
+
+        private void flatComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             // 첫 번째 콤보박스의 선택에 따라 두 번째 콤보박스의 항목을 설정
-            string selectedGu = comboBox1.SelectedItem.ToString();
+            string selectedGu = flatComboBox1.SelectedItem.ToString();
             update_combobox2(selectedGu);
-            comboBox2.SelectedIndex = 0;
-
+            flatComboBox2.SelectedIndex = 0;
         }
+
+
         private void update_combobox2(string guName)
         {
             // 두 번째 콤보박스의 항목을 초기화
-            comboBox2.Items.Clear();
+            flatComboBox2.Items.Clear();
             List<string> DongNames = GetValuesFromTable("TB_DONG", "H_DONG_NAME", $"\"GU_NAME\" = '{guName}' ORDER BY \"H_DONG_NAME\" ", true);
 
             foreach (string dong in DongNames)
             {
-                comboBox2.Items.Add(dong); // ComboBox에 d를 추가합니다.
+                flatComboBox2.Items.Add(dong); // ComboBox에 d를 추가합니다.
             }
         }
 
         private void update_tabpage(string guName, string dongName)
         {
             // 현재 comboBox2에서 선택된 동(Dong) 이름을 가져옴
-            string dong = comboBox2.Text;
+            string dong = flatComboBox2.Text;
 
             // DB로부터 가져올 칼럼 이름들을 리스트로 정의
             var columns = new List<string> { "DEAL_TYPE", "DEAL_USE", "DEAL_GU", "DEAL_DONG", "DEAL_ADDR", "DEAL_DEPOSIT", "DEAL_PRICE", "DEAL_RENT_PRICE", "DEAL_SPACE" };
@@ -288,8 +299,8 @@ namespace FranchiseProject
         {
             //정보 불러오기
             tuples.Clear();
-            string gu = comboBox1.Text;
-            string dong = comboBox2.Text;
+            string gu = flatComboBox1.Text;
+            string dong = flatComboBox2.Text;
             string new_addr = "광주광역시 " + gu + dong;
 
             // 튜플에 값 넣기
@@ -336,7 +347,7 @@ namespace FranchiseProject
         // 체크박스의 상태(선택/해제)에 따라 지도 상에 마커를 표시하거나 삭제
         private void show_checkbox_markers(System.Windows.Forms.CheckBox checkBox)
         {
-            List<Dictionary<string, object>> facility_rows = GetFacilitiesByTypeAndLocation(checkBox, comboBox1, comboBox2);
+            List<Dictionary<string, object>> facility_rows = GetFacilitiesByTypeAndLocation(checkBox, flatComboBox1, flatComboBox2);
 
             StringBuilder jsCode = new StringBuilder(); // JavaScript 코드를 동적으로 생성하기 위한 StringBuilder
             string facilityType = checkBox.Tag.ToString();  //체크박스의 태그 값을 사용하여 시설 유형을 가져옴 -> ui에서 수정함
