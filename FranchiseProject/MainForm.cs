@@ -25,18 +25,27 @@ namespace FranchiseProject
 
         public MainForm()
         {
-            fontLoad();
+            FontLoad();
             InitializeComponent();
             InitializeComboBoxes();
         }
 
-        public static void fontLoad()
+        // 폰트 불러오는 함수
+        public static void FontLoad()
         {
-            string relativeFontFilePath = @"font\Maplestory_Bold.ttf";
+            // 폰트 경로를 배열로 저장 후 부모경로를 통해 상대경로를 뽑아냄
+            string[] fontPaths = { @"font\Maplestory_Bold.ttf", @"font\Maplestory_Light.ttf" };
             string baseDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-            string fontFilePath = Path.Combine(baseDirectory, relativeFontFilePath);
+
+            // 객체를 생성
             PrivateFontCollection privateFonts = new PrivateFontCollection();
-            privateFonts.AddFontFile(fontFilePath);
+
+            // 폰트를 가져온 후 추가
+            foreach (string fontPath in fontPaths)
+            {
+                string fontFilePath = Path.Combine(baseDirectory, fontPath);
+                privateFonts.AddFontFile(fontFilePath);
+            }
         }
 
         // DB

@@ -563,7 +563,7 @@ namespace FranchiseProject
             this.resultButton.BorderSize = 0;
             this.resultButton.FlatAppearance.BorderSize = 0;
             this.resultButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.resultButton.Font = new System.Drawing.Font("메이플스토리", 14F);
+            this.resultButton.Font = new System.Drawing.Font("메이플스토리", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.resultButton.ForeColor = System.Drawing.Color.White;
             this.resultButton.Location = new System.Drawing.Point(732, 530);
             this.resultButton.Name = "resultButton";
