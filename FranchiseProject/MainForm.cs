@@ -228,6 +228,129 @@ namespace FranchiseProject
             }
         }
 
+        private void update_picturebox(string guName, string dongName)
+        {
+            // 필요한 열 이름들을 리스트에 저장
+            var columns = new List<string> { "GU_NAME", "H_DONG_NAME" };
+
+            // GetValuesFromMultipleColumns 메서드를 사용하여 데이터베이스에서 해당 조건에 맞는 데이터를 가져옴
+            var data = GetValuesFromMultipleColumns("TB_DONG", columns, $" \"GU_NAME\" = '{guName}' and \"H_DONG_NAME\" = '{dongName}' ");
+
+            // 가져온 데이터가 없으면 함수를 종료
+            if (data.Count == 0)
+            {
+                return;
+            }
+
+            // 첫 번째 행의 데이터를 가져옴
+            var row = data[0];
+            string dongName_ = row["H_DONG_NAME"].ToString();
+            string guName_ = row["GU_NAME"].ToString();
+
+            // 이미지 파일들이 저장된 폴더 경로들을 배열에 저장
+            string[] folderNames = {
+                "graph\\00_동별_다중이용시설",
+                "graph\\01_동별_인구비율",
+                "graph\\02_동별_면적범위별_평균보증금_임대료_pastel",
+                "graph\\03_구별_1030인구대비_월평균추정매출",
+                "graph\\04_구별_월평균추정매출_경쟁업체"
+            };
+
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            // 각 폴더에서 해당 구와 동 이름을 포함하는 이미지 파일들의 경로를 가져옴
+            for (int idx = 0; idx < folderNames.Length; idx++)
+            {
+                string folderPath = Path.Combine(currentDirectory, folderNames[idx]);
+                List<string> imageFiles = GetMatchingImageFiles(folderPath, guName, dongName);
+
+                // 이미지 파일이 없는 경우 none_data 이미지로 설정
+                if (imageFiles.Count == 0)
+                {
+                    string noneDataImagePath = Path.Combine(folderPath, "none_data.png");
+                    Image noneDataImage = Image.FromFile(noneDataImagePath);
+
+                    // 현재 폴더 인덱스에 따라 해당 PictureBox에 none_data를 설정
+                    if (idx == 0)
+                    {
+                        facPictureBox.Image = noneDataImage;
+                    }
+                    else if (idx == 1)
+                    {
+                        popPictureBox.Image = noneDataImage;
+                    }
+                    else if (idx == 2)
+                    {
+                        pricePictureBox.Image = noneDataImage;
+                    }
+                    else if (idx == 3)
+                    {
+                        guPictureBox1.Image = noneDataImage;
+                    }
+                    else if (idx == 4)
+                    {
+                        guPictureBox2.Image = noneDataImage;
+                    }
+                }
+                else
+                {
+                    // 이미지 파일이 있는 경우, 해당 이미지를 설정
+                    string imagePath = imageFiles[0];
+                    Image image = Image.FromFile(imagePath);
+
+                    // 현재 폴더 인덱스에 따라 해당 PictureBox에 이미지를 설정
+                    if (idx == 0)
+                    {
+                        facPictureBox.Image = image;
+                    }
+                    else if (idx == 1)
+                    {
+                        popPictureBox.Image = image;
+                    }
+                    else if (idx == 2)
+                    {
+                        pricePictureBox.Image = image;
+                    }
+                    else if (idx == 3)
+                    {
+                        guPictureBox1.Image = image;
+                    }
+                    else if (idx == 4)
+                    {
+                        guPictureBox2.Image = image;
+                    }
+                }
+            }
+        }
+
+
+        // 주어진 기본 폴더 경로(baseFolderPath), 구이름(guName), 동이름(dongName)에 맞는 이미지 파일들을 찾아서 리스트로 반환
+        private List<string> GetMatchingImageFiles(string baseFolderPath, string guName, string dongName)
+        {
+            // 결과로 반환할 이미지 파일들을 담을 리스트 생성
+            List<string> imageFiles = new List<string>();
+
+            // 지정된 폴더 경로에서 특정 패턴에 맞는 파일들을 찾아옴 ('구이름_동이름.*' 형태)
+            string[] filesWithDong = Directory.GetFiles(baseFolderPath, $"{guName}_{dongName}.*");
+
+            // '구이름_동이름.*' 형태의 파일이 없을 경우 '구이름.*' 형태의 파일들을 가져옴
+            if (filesWithDong.Length == 0)
+            {
+                string[] filesWithoutDong = Directory.GetFiles(baseFolderPath, $"{guName}.*");
+                imageFiles.AddRange(filesWithoutDong);
+            }
+            else
+            {
+                // '구이름_동이름.*' 형태의 파일이 있을 경우 해당 파일들을 반환할 리스트에 추가
+                imageFiles.AddRange(filesWithDong);
+            }
+
+            // 결과 리스트 반환
+            return imageFiles;
+        }
+
+
+
 
         // 지도
         private void MainForm_Load(object sender, EventArgs e)
@@ -310,6 +433,7 @@ namespace FranchiseProject
             object[] arr = new object[] { sel.Item3, sel.Item2 }; // 위도, 경도
             object res = webBrowser1.Document.InvokeScript("panTo", arr);
             update_tabpage(gu, dong);
+            update_picturebox(gu, dong);
 
             // 올리브영 위치 찍기
             var columns = new List<string> { "LOC_NAME", "LOC_ADDR", "LOC_X", "LOC_Y" };
