@@ -5,6 +5,7 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -21,10 +22,21 @@ namespace FranchiseProject
         // DB 불러오기
         private const string ConnectionString = "Host=10.10.20.103;Username=postgres;Password=1234;Database=franchise";
 
+
         public MainForm()
         {
+            fontLoad();
             InitializeComponent();
             InitializeComboBoxes();
+        }
+
+        public static void fontLoad()
+        {
+            string relativeFontFilePath = @"font\Maplestory_Bold.ttf";
+            string baseDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+            string fontFilePath = Path.Combine(baseDirectory, relativeFontFilePath);
+            PrivateFontCollection privateFonts = new PrivateFontCollection();
+            privateFonts.AddFontFile(fontFilePath);
         }
 
         // DB
@@ -249,14 +261,15 @@ namespace FranchiseProject
 
             // 이미지 파일들이 저장된 폴더 경로들을 배열에 저장
             string[] folderNames = {
-                "graph\\00_동별_다중이용시설",
-                "graph\\01_동별_인구비율",
-                "graph\\02_동별_면적범위별_평균보증금_임대료_pastel",
-                "graph\\03_구별_1030인구대비_월평균추정매출",
-                "graph\\04_구별_월평균추정매출_경쟁업체"
+                @"graph\00_동별_다중이용시설",
+                @"graph\01_동별_인구비율",
+                @"graph\02_동별_면적범위별_평균보증금_임대료_pastel",
+                @"graph\03_구별_1030인구대비_월평균추정매출",
+                @"graph\04_구별_월평균추정매출_경쟁업체",
+                @"graph\05_전역_광주광역시_화장품상가_분포도"
             };
 
-            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string currentDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
 
             // 각 폴더에서 해당 구와 동 이름을 포함하는 이미지 파일들의 경로를 가져옴
             for (int idx = 0; idx < folderNames.Length; idx++)
@@ -320,7 +333,21 @@ namespace FranchiseProject
                         guPictureBox2.Image = image;
                     }
                 }
+
+                // 광주광역시 전체 데이터는 직접 경로와 파일명을 가져와서 pictureBox에 저장
+                rivalPictureBox1.Image = Image.FromFile(GetImagePath(folderNames[5], $"광주광역시_전체상가_지도.png"));
+                rivalPictureBox2.Image = Image.FromFile(GetImagePath(folderNames[5], $"광주광역시_화장품상가_지도.png"));
             }
+        }
+
+        // 주어진 폴더 경로와 파일 이름을 기반으로 이미지 파일의 전체 경로를 생성하는 함수
+        string GetImagePath(string folderPath, string fileName)
+        {
+            // 상대 경로를 가져옴
+            string currentDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+
+            // Path.Combine 메서드를 사용하여 현재 디렉토리, 폴더 경로, 파일 이름을 결합하여 이미지 파일의 전체 경로를 반환함
+            return Path.Combine(currentDirectory, folderPath, fileName);
         }
 
 
@@ -332,13 +359,14 @@ namespace FranchiseProject
 
             // 지정된 폴더 경로에서 특정 패턴에 맞는 파일들을 찾아옴 ('구이름_동이름.*' 형태)
             string[] filesWithDong = Directory.GetFiles(baseFolderPath, $"{guName}_{dongName}.*");
+            string[] filesWithoutDong = Directory.GetFiles(baseFolderPath, $"{guName}.*");
 
             // '구이름_동이름.*' 형태의 파일이 없을 경우 '구이름.*' 형태의 파일들을 가져옴
             if (filesWithDong.Length == 0)
             {
-                string[] filesWithoutDong = Directory.GetFiles(baseFolderPath, $"{guName}.*");
                 imageFiles.AddRange(filesWithoutDong);
             }
+
             else
             {
                 // '구이름_동이름.*' 형태의 파일이 있을 경우 해당 파일들을 반환할 리스트에 추가
@@ -348,9 +376,6 @@ namespace FranchiseProject
             // 결과 리스트 반환
             return imageFiles;
         }
-
-
-
 
         // 지도
         private void MainForm_Load(object sender, EventArgs e)

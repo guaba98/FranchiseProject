@@ -50,8 +50,18 @@ namespace FranchiseProject
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.popPictureBox = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.facPictureBox = new System.Windows.Forms.PictureBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.pricePictureBox = new System.Windows.Forms.PictureBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.guPictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.guPictureBox2 = new System.Windows.Forms.PictureBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
@@ -66,29 +76,25 @@ namespace FranchiseProject
             this.flatComboBox2 = new FlatComboBox();
             this.flatComboBox1 = new FlatComboBox();
             this.resultButton = new CustomControls.RoundedButton();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.popPictureBox = new System.Windows.Forms.PictureBox();
-            this.facPictureBox = new System.Windows.Forms.PictureBox();
-            this.pricePictureBox = new System.Windows.Forms.PictureBox();
-            this.guPictureBox1 = new System.Windows.Forms.PictureBox();
-            this.guPictureBox2 = new System.Windows.Forms.PictureBox();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rivalPictureBox1 = new System.Windows.Forms.PictureBox();
+            this.rivalPictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.tabPage5.SuspendLayout();
-            this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.popPictureBox)).BeginInit();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.facPictureBox)).BeginInit();
+            this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pricePictureBox)).BeginInit();
+            this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guPictureBox1)).BeginInit();
+            this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guPictureBox2)).BeginInit();
             this.tabPage7.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rivalPictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rivalPictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -272,6 +278,16 @@ namespace FranchiseProject
             this.tabPage2.Text = "인구";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // popPictureBox
+            // 
+            this.popPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.popPictureBox.Location = new System.Drawing.Point(3, 3);
+            this.popPictureBox.Name = "popPictureBox";
+            this.popPictureBox.Size = new System.Drawing.Size(521, 403);
+            this.popPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.popPictureBox.TabIndex = 0;
+            this.popPictureBox.TabStop = false;
+            // 
             // tabPage3
             // 
             this.tabPage3.AutoScroll = true;
@@ -283,6 +299,16 @@ namespace FranchiseProject
             this.tabPage3.Text = "다중이용시설";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // facPictureBox
+            // 
+            this.facPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.facPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.facPictureBox.Name = "facPictureBox";
+            this.facPictureBox.Size = new System.Drawing.Size(527, 409);
+            this.facPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.facPictureBox.TabIndex = 0;
+            this.facPictureBox.TabStop = false;
+            // 
             // tabPage4
             // 
             this.tabPage4.AutoScroll = true;
@@ -293,6 +319,90 @@ namespace FranchiseProject
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "보증금/임대료";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // pricePictureBox
+            // 
+            this.pricePictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pricePictureBox.Location = new System.Drawing.Point(0, 0);
+            this.pricePictureBox.Name = "pricePictureBox";
+            this.pricePictureBox.Size = new System.Drawing.Size(527, 409);
+            this.pricePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pricePictureBox.TabIndex = 0;
+            this.pricePictureBox.TabStop = false;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.AutoScroll = true;
+            this.tabPage5.Controls.Add(this.guPictureBox1);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(527, 409);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "월평균추정매출";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // guPictureBox1
+            // 
+            this.guPictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.guPictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.guPictureBox1.Name = "guPictureBox1";
+            this.guPictureBox1.Size = new System.Drawing.Size(527, 409);
+            this.guPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.guPictureBox1.TabIndex = 0;
+            this.guPictureBox1.TabStop = false;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.AutoScroll = true;
+            this.tabPage6.Controls.Add(this.guPictureBox2);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(527, 409);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "경쟁업체";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // guPictureBox2
+            // 
+            this.guPictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.guPictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.guPictureBox2.Name = "guPictureBox2";
+            this.guPictureBox2.Size = new System.Drawing.Size(527, 409);
+            this.guPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.guPictureBox2.TabIndex = 0;
+            this.guPictureBox2.TabStop = false;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.AutoScroll = true;
+            this.tabPage7.Controls.Add(this.groupBox2);
+            this.tabPage7.Controls.Add(this.groupBox1);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(527, 409);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "상가 분포도";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rivalPictureBox2);
+            this.groupBox2.Location = new System.Drawing.Point(6, 206);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(515, 200);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "광주 전역 동종업종 분포도";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rivalPictureBox1);
+            this.groupBox1.Location = new System.Drawing.Point(6, 7);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(515, 193);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "광주 전역 상권 분포도";
             // 
             // checkBox1
             // 
@@ -464,107 +574,25 @@ namespace FranchiseProject
             this.resultButton.UseVisualStyleBackColor = false;
             this.resultButton.Click += new System.EventHandler(this.resultButton_Click);
             // 
-            // tabPage5
+            // rivalPictureBox1
             // 
-            this.tabPage5.AutoScroll = true;
-            this.tabPage5.Controls.Add(this.guPictureBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(527, 409);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "월평균추정매출";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.rivalPictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rivalPictureBox1.Location = new System.Drawing.Point(3, 17);
+            this.rivalPictureBox1.Name = "rivalPictureBox1";
+            this.rivalPictureBox1.Size = new System.Drawing.Size(509, 173);
+            this.rivalPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.rivalPictureBox1.TabIndex = 29;
+            this.rivalPictureBox1.TabStop = false;
             // 
-            // tabPage6
+            // rivalPictureBox2
             // 
-            this.tabPage6.AutoScroll = true;
-            this.tabPage6.Controls.Add(this.guPictureBox2);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(527, 409);
-            this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "경쟁업체";
-            this.tabPage6.UseVisualStyleBackColor = true;
-            // 
-            // popPictureBox
-            // 
-            this.popPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.popPictureBox.Location = new System.Drawing.Point(3, 3);
-            this.popPictureBox.Name = "popPictureBox";
-            this.popPictureBox.Size = new System.Drawing.Size(521, 403);
-            this.popPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.popPictureBox.TabIndex = 0;
-            this.popPictureBox.TabStop = false;
-            // 
-            // facPictureBox
-            // 
-            this.facPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.facPictureBox.Location = new System.Drawing.Point(0, 0);
-            this.facPictureBox.Name = "facPictureBox";
-            this.facPictureBox.Size = new System.Drawing.Size(527, 409);
-            this.facPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.facPictureBox.TabIndex = 0;
-            this.facPictureBox.TabStop = false;
-            // 
-            // pricePictureBox
-            // 
-            this.pricePictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pricePictureBox.Location = new System.Drawing.Point(0, 0);
-            this.pricePictureBox.Name = "pricePictureBox";
-            this.pricePictureBox.Size = new System.Drawing.Size(527, 409);
-            this.pricePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pricePictureBox.TabIndex = 0;
-            this.pricePictureBox.TabStop = false;
-            // 
-            // guPictureBox1
-            // 
-            this.guPictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.guPictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.guPictureBox1.Name = "guPictureBox1";
-            this.guPictureBox1.Size = new System.Drawing.Size(527, 409);
-            this.guPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.guPictureBox1.TabIndex = 0;
-            this.guPictureBox1.TabStop = false;
-            // 
-            // guPictureBox2
-            // 
-            this.guPictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.guPictureBox2.Location = new System.Drawing.Point(0, 0);
-            this.guPictureBox2.Name = "guPictureBox2";
-            this.guPictureBox2.Size = new System.Drawing.Size(527, 409);
-            this.guPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.guPictureBox2.TabIndex = 0;
-            this.guPictureBox2.TabStop = false;
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.AutoScroll = true;
-            this.tabPage7.Controls.Add(this.groupBox2);
-            this.tabPage7.Controls.Add(this.groupBox1);
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(527, 409);
-            this.tabPage7.TabIndex = 6;
-            this.tabPage7.Text = "화장품업체분포도";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Location = new System.Drawing.Point(3, 7);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(521, 119);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "storeGroupBox1";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Location = new System.Drawing.Point(3, 132);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(521, 274);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "storeGroupBox2";
+            this.rivalPictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rivalPictureBox2.Location = new System.Drawing.Point(3, 17);
+            this.rivalPictureBox2.Name = "rivalPictureBox2";
+            this.rivalPictureBox2.Size = new System.Drawing.Size(509, 180);
+            this.rivalPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.rivalPictureBox2.TabIndex = 30;
+            this.rivalPictureBox2.TabStop = false;
             // 
             // MainForm
             // 
@@ -598,16 +626,20 @@ namespace FranchiseProject
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage5.ResumeLayout(false);
-            this.tabPage6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.popPictureBox)).EndInit();
+            this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.facPictureBox)).EndInit();
+            this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pricePictureBox)).EndInit();
+            this.tabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.guPictureBox1)).EndInit();
+            this.tabPage6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.guPictureBox2)).EndInit();
             this.tabPage7.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.rivalPictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rivalPictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -659,6 +691,8 @@ namespace FranchiseProject
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.PictureBox rivalPictureBox1;
+        private System.Windows.Forms.PictureBox rivalPictureBox2;
     }
 }
 
