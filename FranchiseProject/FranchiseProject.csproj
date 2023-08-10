@@ -180,6 +180,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Olive_Young_Logo.svg.png" />
     <None Include="graph\01_동별_다중이용시설\none_data.png" />
     <None Include="graph\01_동별_다중이용시설\광산구_도산동.png" />
     <None Include="graph\01_동별_다중이용시설\광산구_동곡동.png" />

@@ -22,7 +22,6 @@ namespace FranchiseProject
         // DB 불러오기
         private const string ConnectionString = "Host=10.10.20.103;Username=postgres;Password=1234;Database=franchise";
 
-
         public MainForm()
         {
             FontLoad();
@@ -34,7 +33,7 @@ namespace FranchiseProject
         public static void FontLoad()
         {
             // 폰트 경로를 배열로 저장 후 부모경로를 통해 상대경로를 뽑아냄
-            string[] fontPaths = { @"font\Maplestory_Bold.ttf", @"font\Maplestory_Light.ttf" };
+            string[] fontPaths = { @"font\Maplestory_Bold.ttf", @"font\Maplestory_Light.ttf", @"font\NanumGothic.ttf" };
             string baseDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
 
             // 객체를 생성
@@ -159,6 +158,7 @@ namespace FranchiseProject
         {
             //콤보박스
             string[] data = { "북구", "서구", "동구", "남구", "광산구" };
+            flatComboBox1.Items.Add("선택");
             flatComboBox1.Items.AddRange(data); // 콤보박스에 자료 넣기
             flatComboBox1.SelectedIndex = 0; // 첫번째 아이템 선택
         }
@@ -184,8 +184,8 @@ namespace FranchiseProject
         {
             // 두 번째 콤보박스의 항목을 초기화
             flatComboBox2.Items.Clear();
-            List<string> DongNames = GetValuesFromTable("TB_DONG", "H_DONG_NAME", $"\"GU_NAME\" = '{guName}' ORDER BY \"H_DONG_NAME\" ", true);
-
+            List<string> DongNames = GetValuesFromTable("TB_DONG", "H_DONG_NAME", $"\"GU_NAME\" = '{guName}' ORDER BY \"H_DONG_NAME\"", true);
+            flatComboBox2.Items.Add("선택");
             foreach (string dong in DongNames)
             {
                 flatComboBox2.Items.Add(dong); // ComboBox에 d를 추가합니다.
@@ -386,6 +386,9 @@ namespace FranchiseProject
             return imageFiles;
         }
 
+
+
+
         // 지도
         private void MainForm_Load(object sender, EventArgs e)
 
@@ -396,10 +399,9 @@ namespace FranchiseProject
             string name = webBrowser1.ProductName;
             string str = webBrowser1.ProductVersion;
             string html = "kakaoMap.html";
-            string dir = System.IO.Directory.GetCurrentDirectory();
-            string path = System.IO.Path.Combine(dir, html);
+            string dir = Directory.GetCurrentDirectory();
+            string path = Path.Combine(dir, html);
             webBrowser1.Navigate(path);
-
         }
 
         public void Search(string area) // 지역 검색
@@ -453,11 +455,18 @@ namespace FranchiseProject
         // 검색 버튼 눌렀을 때 연결
         private void button4_Click(object sender, EventArgs e)
         {
+
             //정보 불러오기
             tuples.Clear();
             string gu = flatComboBox1.Text;
             string dong = flatComboBox2.Text;
             string new_addr = "광주광역시 " + gu + dong;
+
+            if (gu == "선택" | dong == "선택")
+            {
+                MessageBox.Show("구와 동을 선택하세요!");
+                return;
+            }
 
             // 튜플에 값 넣기
             Search(new_addr);
@@ -498,6 +507,16 @@ namespace FranchiseProject
                 webBrowser1.Document.InvokeScript("eval", new object[] { jsCode.ToString() });
             }
 
+            checkBox1.Checked = false;
+            checkBox2.Checked = false;
+            checkBox3.Checked = false;
+            checkBox4.Checked = false;
+            checkBox5.Checked = false;
+            checkBox6.Checked = false;
+            checkBox7.Checked = false;
+            checkBox8.Checked = false;
+            checkBox9.Checked = false;
+            checkBox10.Checked = false;
 
         }
 
@@ -535,8 +554,6 @@ namespace FranchiseProject
             webBrowser1.Document.InvokeScript("eval", new object[] { jsCode.ToString() });
         }
 
-
-
         // 체크박스의 이름을 참조해서 db에서 값을 가져온다.(인자: 체크박스, 구 콤보박스, 동 콤보박스)
         private List<Dictionary<string, object>> GetFacilitiesByTypeAndLocation(CheckBox checkBox, ComboBox guComboBox, ComboBox dongComboBox)
         {
@@ -555,7 +572,7 @@ namespace FranchiseProject
             {
                 condition = $"\"FACILITY_GU\" = '{gu}' AND \"FACILITY_DONG\" = '{dong}' AND \"FACILITY_TYPE\" IN ('쇼핑몰', '할인점')";
             }
-            else if (facilityType == "중/고등학교")
+            else if (facilityType == "중고등학교")
             {
                 condition = $"\"FACILITY_GU\" = '{gu}' AND \"FACILITY_DONG\" = '{dong}' AND \"FACILITY_TYPE\" IN ('중학교', '고등학교')";
             }
@@ -570,8 +587,6 @@ namespace FranchiseProject
 
             return GetAllRowsFromTable("TB_FACILITY", condition);
         }
-
-
 
         // 다중이용시설 체크박스 이벤트 연결
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -639,6 +654,5 @@ namespace FranchiseProject
         {
 
         }
-
     }
 }
