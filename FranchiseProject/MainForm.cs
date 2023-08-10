@@ -17,34 +17,94 @@ namespace FranchiseProject
 {
     public partial class MainForm : Form
     {
+
         // 지역명, 위도, 경도  (ex. "문정동", "37.412412", "124.512512")
         List<Tuple<string, double, double>> tuples = new List<Tuple<string, double, double>>();
+
         // DB 불러오기
         private const string ConnectionString = "Host=10.10.20.103;Username=postgres;Password=1234;Database=franchise";
 
+        // 검색 버튼 클릭 됐는지 감지
+        bool clickDetected = false;
+
+        // 마우스 드래그를 위한 offset 변수
+        private Point offset;
+
+        private string minCostValue;
+        private string maxCostValue;
+
+        // 생성자
         public MainForm()
         {
-            FontLoad();
             InitializeComponent();
             InitializeComboBoxes();
         }
 
-        // 폰트 불러오는 함수
-        public static void FontLoad()
+        // 메인폼 테두리 설정
+        private void MainForm_Paint(object sender, PaintEventArgs e)
         {
-            // 폰트 경로를 배열로 저장 후 부모경로를 통해 상대경로를 뽑아냄
-            string[] fontPaths = { @"font\Maplestory_Bold.ttf", @"font\Maplestory_Light.ttf", @"font\NanumGothic.ttf" };
+            ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle,
+                Color.Black, 2, ButtonBorderStyle.Solid,
+                Color.Black, 2, ButtonBorderStyle.Solid,
+                Color.Black, 2, ButtonBorderStyle.Solid,
+                Color.Black, 2, ButtonBorderStyle.Solid);
+        }
+
+        // 폰트 불러오는 함수
+        public static Font FontLoad(int fontNum, int fontSize)
+        {
+            string[] fontPaths = { @"font\Pretendard-Regular.ttf", @"font\Maplestory_Bold.ttf" };
             string baseDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
 
-            // 객체를 생성
-            PrivateFontCollection privateFonts = new PrivateFontCollection();
-
-            // 폰트를 가져온 후 추가
-            foreach (string fontPath in fontPaths)
+            using (PrivateFontCollection privateFonts = new PrivateFontCollection())
             {
-                string fontFilePath = Path.Combine(baseDirectory, fontPath);
-                privateFonts.AddFontFile(fontFilePath);
+                foreach (string fontPath in fontPaths)
+                {
+                    string fontFilePath = Path.Combine(baseDirectory, fontPath);
+                    privateFonts.AddFontFile(fontFilePath);
+                }
+
+                if (fontNum >= 0 && fontNum < privateFonts.Families.Length)
+                {
+                    return new Font(privateFonts.Families[fontNum], fontSize);
+                }
+
+                else
+                {
+                    return SystemFonts.DefaultFont;
+                }
             }
+        }
+
+        public void SetFont(Control control, int fontNum, int fontSize)
+        {
+            control.Font = FontLoad(fontNum, fontSize);
+        }
+
+        // MainForm 내부의 폰트를 수정합니다.
+        // 폰트의 수정이 필요하면 아래의 값만 수정해주세요. SetFont(라벨명, 폰트번호, 폰트사이즈)
+        // index 0: 프리텐다드 1: 메이플스토리 볼드
+        public void SetFontList()
+        {
+            SetFont(flatComboBox1, 0, 9);
+            SetFont(flatComboBox2, 0, 9);
+            SetFont(tabControl1, 0, 9);
+            SetFont(checkBox1, 0, 9);
+            SetFont(checkBox2, 0, 9);
+            SetFont(checkBox3, 0, 9);
+            SetFont(checkBox4, 0, 9);
+            SetFont(checkBox5, 0, 9);
+            SetFont(checkBox6, 0, 9);
+            SetFont(checkBox7, 0, 9);
+            SetFont(checkBox8, 0, 9);
+            SetFont(checkBox9, 0, 9);
+            SetFont(checkBox10, 0, 9);
+            SetFont(button2, 0, 9);
+            SetFont(button3, 0, 9);
+            SetFont(button4, 0, 9);
+            SetFont(resultButton, 1, 15);
+            SetFont(minimizeButton, 0, 9);
+            SetFont(exitButton, 0, 9);
         }
 
         // DB
@@ -386,13 +446,10 @@ namespace FranchiseProject
             return imageFiles;
         }
 
-
-
-
         // 지도
         private void MainForm_Load(object sender, EventArgs e)
-
         {
+            SetFontList();
             // 로드될 때 생성
             // WebBrowser 컨트롤에 "kakaoMap.html" 을 표시한다. 
             Version ver = webBrowser1.Version;
@@ -402,6 +459,7 @@ namespace FranchiseProject
             string dir = Directory.GetCurrentDirectory();
             string path = Path.Combine(dir, html);
             webBrowser1.Navigate(path);
+            SetFontList();
         }
 
         public void Search(string area) // 지역 검색
@@ -455,7 +513,7 @@ namespace FranchiseProject
         // 검색 버튼 눌렀을 때 연결
         private void button4_Click(object sender, EventArgs e)
         {
-
+            SetFontList();
             //정보 불러오기
             tuples.Clear();
             string gu = flatComboBox1.Text;
@@ -464,9 +522,12 @@ namespace FranchiseProject
 
             if (gu == "선택" | dong == "선택")
             {
-                MessageBox.Show("구와 동을 선택하세요!");
+                MessageBox.Show("구와 동을 선택해주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
+            // 클릭 됐는지 감지
+            clickDetected = true;
 
             // 튜플에 값 넣기
             Search(new_addr);
@@ -485,6 +546,8 @@ namespace FranchiseProject
             var data = GetValuesFromMultipleColumns("TB_LOCATION", columns, condition, false);
             StringBuilder jsCode = new StringBuilder();
             jsCode.AppendLine($"remove_markers('olive_young');");
+            
+            SetFontList();
 
             if (data != null && data.Count > 0)
             {
@@ -507,6 +570,80 @@ namespace FranchiseProject
                 webBrowser1.Document.InvokeScript("eval", new object[] { jsCode.ToString() });
             }
 
+            // 버스 위치 찍기
+            var bus_columns = new List<string> { "BUS_NAME", "BUS_ADDR", "BUS_X", "BUS_Y" };
+            var bus_condition = $"\"BUS_GU\" = '{gu}' AND \"BUS_DONG\" = \'{dong}\'";
+
+            var bus_data = GetValuesFromMultipleColumns("TB_BUS", bus_columns, bus_condition, false);
+            StringBuilder bus_jsCode = new StringBuilder();
+            bus_jsCode.AppendLine($"remove_markers('bus');");
+
+            if (bus_data != null && bus_data.Count > 0)
+            {
+                bus_jsCode.AppendLine($"add_markers('bus', [");
+                foreach (var row in bus_data)
+                {
+                    string name = row["BUS_NAME"].ToString(); // 업체명
+                    string addr = row["BUS_ADDR"].ToString();  // 주소 
+                    string x = row["BUS_X"].ToString(); //x좌표
+                    string y = row["BUS_Y"].ToString(); //y좌표
+                    Console.WriteLine(name + addr + x + y); // 확인용
+
+                    // 각 시설의 정보를 바탕으로 JavaScript 코드를 추가
+                    bus_jsCode.AppendLine($"{{ title: '{name}', addr: '{addr}', latlng: new kakao.maps.LatLng({x}, {y}) }},");
+                }
+                bus_jsCode.AppendLine("]);");
+                Console.WriteLine(bus_jsCode.ToString());
+
+                // 생성된 JavaScript 코드를 웹 브라우저 컨트롤을 통해 실행
+                webBrowser1.Document.InvokeScript("eval", new object[] { bus_jsCode.ToString() });
+            }
+
+            SetFontList();
+
+            //예상 창업 비용 작업 완
+            var columns_deal = new List<string> { "DEAL_DEPOSIT", "DEAL_RENT_PRICE", "DEAL_SPACE" };
+            var condition_deal = $"\"DEAL_TYPE\" = \'월세\' and \"DEAL_DONG\" = \'{dong}\'";
+            var data_deal = GetValuesFromMultipleColumns("TB_DEAL", columns_deal, condition_deal, false);
+            int franchise_cost = 1100; // 가맹비
+            int premium = 10000; // 권리금
+            int furniture = 13000; // 집기비용
+            int system_cost = 1000; // 전산비용
+            int start_goods = 10000; // 초도상품구매비용
+            int work_cost = 1200; // 공사비
+            int etc = 200; // 기타
+            int deposit = 0; // 보증금
+            int rent_price = 0; // 임대료
+            float space = 0; // 면적
+            int interior_cost = 0; // 인테리어비 면적 // 3.3 * 198
+
+            List<int> deposit_list = new List<int>();
+            List<int> interior_list = new List<int>();
+            foreach (var row in data_deal)
+            {
+                deposit = Convert.ToInt32(row["DEAL_DEPOSIT"]);
+                rent_price = Convert.ToInt32(row["DEAL_RENT_PRICE"]);
+                space = Convert.ToSingle(row["DEAL_SPACE"]);
+                double result = space / 3.3 * 198;
+                interior_cost = Convert.ToInt32(result);
+                deposit_list.Add(deposit);
+                interior_list.Add(interior_cost);
+            }
+
+            int min_deposit = deposit_list.Min();
+            int max_deposit = deposit_list.Max();
+            int min_interior_cost = interior_list.Min();
+            int max_interior_cost = interior_list.Max();
+
+            int total_min = franchise_cost + premium + furniture + system_cost + start_goods + work_cost + etc + min_deposit + min_interior_cost;
+            int total_max = franchise_cost + premium + furniture + system_cost + start_goods + work_cost + etc + max_deposit + max_interior_cost;
+            string min_cost = Formatwon(total_min); // 최종 최소 금액
+            string max_cost = Formatwon(total_max); // 최종 최고 금액
+
+            // 전역 변수에 할당
+            minCostValue = min_cost;
+            maxCostValue = max_cost;
+
             checkBox1.Checked = false;
             checkBox2.Checked = false;
             checkBox3.Checked = false;
@@ -517,8 +654,18 @@ namespace FranchiseProject
             checkBox8.Checked = false;
             checkBox9.Checked = false;
             checkBox10.Checked = false;
-
+            SetFontList();
         }
+
+        // ~억 ~만원 이라고 표현해주는 함수
+        static string Formatwon(int price)
+        {
+            int eok = price / 10000;
+            int man = (price / 10);
+
+            return $"{eok}억 {man}만원";
+        }
+
 
         // 체크박스의 상태(선택/해제)에 따라 지도 상에 마커를 표시하거나 삭제
         private void show_checkbox_markers(System.Windows.Forms.CheckBox checkBox)
@@ -652,7 +799,73 @@ namespace FranchiseProject
 
         private void resultButton_Click(object sender, EventArgs e)
         {
+            if (flatComboBox1.Text == "선택" || flatComboBox2.Text == "선택")
+            {
+                MessageBox.Show("구와 동을 선택해주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
+            else if (clickDetected == false)
+            {
+                MessageBox.Show("검색 버튼을 클릭해주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            else
+            {
+                string guName = flatComboBox1.Text;
+                string dongName = flatComboBox2.Text;
+
+                DialogForm dialogForm = new DialogForm(guName, dongName, minCostValue, maxCostValue);
+                dialogForm.ShowDialog();
+            }
+
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void MainForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                offset = new Point(e.X, e.Y);
+            }
+        }
+
+        private void MainForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Point newLocation = this.Location;
+                newLocation.X += e.X - offset.X;
+                newLocation.Y += e.Y - offset.Y;
+                this.Location = newLocation;
+            }
+        }
+
+        private void label2_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                offset = new Point(e.X, e.Y);
+            }
+        }
+
+        private void label2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Point newLocation = this.Location;
+                newLocation.X += e.X - offset.X;
+                newLocation.Y += e.Y - offset.Y;
+                this.Location = newLocation;
+            }
         }
     }
 }

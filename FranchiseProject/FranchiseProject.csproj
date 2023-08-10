@@ -123,6 +123,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogForm.Designer.cs">
+      <DependentUpon>DialogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +155,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="yunjae\DBConnector.cs" />
+    <EmbeddedResource Include="DialogForm.resx">
+      <DependentUpon>DialogForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -180,6 +189,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\h1_logo_1.png" />
+    <None Include="Resources\img_startform.png" />
     <None Include="Resources\Olive_Young_Logo.svg.png" />
     <None Include="graph\01_동별_다중이용시설\none_data.png" />
     <None Include="graph\01_동별_다중이용시설\광산구_도산동.png" />

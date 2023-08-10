@@ -22,6 +22,7 @@ namespace FranchiseProject
             MainForm MainForm = new MainForm();
             MainForm.Show();
             this.Hide();
+
         }
     }
 }

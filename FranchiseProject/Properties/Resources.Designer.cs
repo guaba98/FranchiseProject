@@ -63,6 +63,26 @@ namespace FranchiseProject.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap h1_logo_1 {
+            get {
+                object obj = ResourceManager.GetObject("h1_logo_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_startform {
+            get {
+                object obj = ResourceManager.GetObject("img_startform", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Olive_Young_Logo_svg {
             get {
                 object obj = ResourceManager.GetObject("Olive_Young_Logo.svg", resourceCulture);

@@ -117,44 +117,10 @@
 
             var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; // 마커 이미지 원본
 
-
-
             var infoBackgroundColor = "rgba(255, 234, 167, 0.9)"; // 기본 배경색
             var titleBackgroundColor = "rgb(255, 194, 0)"; // 기본 제목 배경색
             var arrowColor = "rgba(255, 234, 167, 0.9)"; // 화살표의 기본 색상
 
-
-
-            //if (type === "편의점") {
-            //    imagesrc = "https://ifh.cc/g/xosnnw.png";
-            //}
-            //else if (type === "카페") {
-            //    imagesrc = "https://ifh.cc/g/asthzv.png";
-            //}
-            //else if (type === "은행") {
-            //    imagesrc = "https://ifh.cc/g/oksgox.png";
-            //}
-            //else if (type === "쇼핑몰") {
-            //    imagesrc = "https://ifh.cc/g/6lnbgc.png";
-            //}
-            //else if (type === "병원") {
-            //    imagesrc = "https://ifh.cc/g/whpbdd.png";
-            //}
-            //else if (type === "음식점") {
-            //    imagesrc = "https://ifh.cc/g/ayv1oq.png";
-            //}
-            //else if (type === "공영주차장") {
-            //    imagesrc = "https://ifh.cc/g/bcopkt.png";
-            //}
-            //else if (type === "중고등학교") {
-            //    imagesrc = "https://ifh.cc/g/lnpzaf.png";
-            //}
-            //else if (type === "대학교") {
-            //    imagesrc = "https://ifh.cc/g/bxcy85.png";
-            //}
-            //else if (type === "문화시설") {
-            //    imagesrc = "https://ifh.cc/g/w6dtzp.png";
-            //}
             var imageSize = new kakao.maps.Size(45, 45); // 마커 크기
 
             // 타입별로 이미지 URL을 객체에 저장
@@ -169,6 +135,7 @@
                 "중고등학교": "https://ifh.cc/g/lnpZAF.png",
                 "대학교": "https://ifh.cc/g/BXcY85.png",
                 "문화시설": "https://ifh.cc/g/w6dTZP.png",
+                "bus": "https://ifh.cc/g/RpaT5V.png",
                 "olive_young": "https://static.oliveyoung.co.kr/pc-static-root/image/store/point_way.png"
             };
 
@@ -236,6 +203,24 @@
                         overlay.setMap(map); // 클릭한 마커의 오버레이만 보이기
                     });
                 })(type, marker, overlay);
+
+                // 버스 마커 줌 크기에 따라 숨기기
+                kakao.maps.event.addListener(map, 'zoom_changed', function () {
+                    // 현재 줌 레벨을 가져옴
+                    var zoomLevel = map.getLevel();
+
+                    if (zoomLevel <= 4) { // 줌 레벨이 4 이하면 (확대 상태)
+                        // 모든 마커 숨기기
+                        for (var i = 0; i < markersByType['bus'].length; i++) {
+                            markersByType['bus'][i].marker.setMap(null);
+                        }
+                    } else { // 줌 레벨이 4 초과면 (축소 상태)
+                        // 모든 버스 마커 보이게 하기
+                        for (var i = 0; i < markersByType['bus'].length; i++) {
+                            markersByType['bus'][i].marker.setMap(map);
+                        }
+                    }
+                });
             }
         }
 
