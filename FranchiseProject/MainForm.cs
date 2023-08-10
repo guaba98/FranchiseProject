@@ -32,6 +32,9 @@ namespace FranchiseProject
 
         private string minCostValue;
         private string maxCostValue;
+        private string salesIncome;
+        private string salesPeople;
+        private string facilityCnt;
 
         // 생성자
         public MainForm()
@@ -569,7 +572,7 @@ namespace FranchiseProject
             var data = GetValuesFromMultipleColumns("TB_LOCATION", columns, condition, false);
             StringBuilder jsCode = new StringBuilder();
             jsCode.AppendLine($"remove_markers('olive_young');");
-            
+
             SetFontList();
 
             if (data != null && data.Count > 0)
@@ -664,9 +667,27 @@ namespace FranchiseProject
             string min_cost = Formatwon(total_min); // 최종 최소 금액
             string max_cost = Formatwon(total_max); // 최종 최고 금액
 
+
+            // ↓ 월평균매출, 유동인구 로직
+            string condition1 = $"\"FACILITY_GU\" = '{gu}' AND \"FACILITY_DONG\" = '{dong}'";
+            var faciltiy_data = GetAllRowsFromTable("TB_FACILITY", condition1);
+            int facility_cnt = faciltiy_data.Count(); // 다중이용시설 갯수
+
+            var salses_columns = new List<string> { "SALES_INCOME", "SALES_PEOPLE" };
+            var sales_con = $"\"SALES_GU\" = '{gu}' AND \"SALES_DONG\" = '{dong}'";
+            var sales_data = GetValuesFromMultipleColumns("TB_SALES", salses_columns, sales_con, false);
+
+            // 월평균매출, 유동인구
+            string sales_income = sales_data[0]["SALES_INCOME"].ToString(); // 월평균매출 
+            string sales_people = sales_data[0]["SALES_PEOPLE"].ToString(); // 유동인구
+
             // 전역 변수에 할당
             minCostValue = min_cost;
             maxCostValue = max_cost;
+            salesIncome = sales_income;
+            salesPeople = sales_people;
+            facilityCnt = facility_cnt.ToString();
+
 
             checkBox1.Checked = false;
             checkBox2.Checked = false;
@@ -838,7 +859,7 @@ namespace FranchiseProject
                 string guName = flatComboBox1.Text;
                 string dongName = flatComboBox2.Text;
 
-                DialogForm dialogForm = new DialogForm(guName, dongName, minCostValue, maxCostValue);
+                DialogForm dialogForm = new DialogForm(guName, dongName, minCostValue, maxCostValue, salesIncome, salesPeople, facilityCnt);
                 dialogForm.ShowDialog();
             }
 

@@ -33,6 +33,7 @@
             this.dialogTitleLabel = new System.Windows.Forms.Label();
             this.regionNameLabel = new System.Windows.Forms.Label();
             this.mainLabel = new System.Windows.Forms.Label();
+            this.finalLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,6 +47,8 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(396, 83);
             this.panel1.TabIndex = 0;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             // 
             // exitButton
             // 
@@ -79,18 +82,28 @@
             // 
             // mainLabel
             // 
-            this.mainLabel.Location = new System.Drawing.Point(31, 178);
+            this.mainLabel.Location = new System.Drawing.Point(31, 202);
             this.mainLabel.Name = "mainLabel";
-            this.mainLabel.Size = new System.Drawing.Size(337, 290);
+            this.mainLabel.Size = new System.Drawing.Size(337, 129);
             this.mainLabel.TabIndex = 3;
             this.mainLabel.Text = "mainLabel";
             this.mainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // finalLabel
+            // 
+            this.finalLabel.Location = new System.Drawing.Point(31, 374);
+            this.finalLabel.Name = "finalLabel";
+            this.finalLabel.Size = new System.Drawing.Size(337, 68);
+            this.finalLabel.TabIndex = 4;
+            this.finalLabel.Text = "finalLabel";
+            this.finalLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 500);
+            this.Controls.Add(this.finalLabel);
             this.Controls.Add(this.mainLabel);
             this.Controls.Add(this.regionNameLabel);
             this.Controls.Add(this.panel1);
@@ -101,6 +114,8 @@
             this.Text = "DialogForm";
             this.Load += new System.EventHandler(this.DialogForm_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.dialogForm_Paint);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DialogForm_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DialogForm_MouseMove);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -113,5 +128,6 @@
         private System.Windows.Forms.Label regionNameLabel;
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Label mainLabel;
+        private System.Windows.Forms.Label finalLabel;
     }
 }
