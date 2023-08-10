@@ -81,12 +81,52 @@ namespace FranchiseProject.Properties {
         }
         
         /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static byte[] Maplestory_Bold {
+            get {
+                object obj = ResourceManager.GetObject("Maplestory_Bold", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static byte[] Maplestory_Light {
+            get {
+                object obj = ResourceManager.GetObject("Maplestory_Light", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static byte[] NanumGothic {
+            get {
+                object obj = ResourceManager.GetObject("NanumGothic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
         internal static System.Drawing.Bitmap Olive_Young_Logo_svg {
             get {
                 object obj = ResourceManager.GetObject("Olive_Young_Logo.svg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static byte[] Pretendard_Regular {
+            get {
+                object obj = ResourceManager.GetObject("Pretendard_Regular", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

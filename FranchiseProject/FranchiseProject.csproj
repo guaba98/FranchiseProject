@@ -148,6 +148,7 @@
     <Compile Include="yunjae\FlatComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="yunjae\FontManager.cs" />
     <Compile Include="yunjae\imageButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -174,6 +175,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="font\Maplestory_Bold.ttf" />
+    <None Include="font\Maplestory_Light.ttf" />
+    <None Include="font\NanumGothic.ttf" />
+    <None Include="font\Pretendard-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -184,6 +189,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\Pretendard-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -191,6 +197,9 @@
   <ItemGroup>
     <None Include="Resources\h1_logo_1.png" />
     <None Include="Resources\img_startform.png" />
+    <None Include="Resources\Maplestory_Bold.ttf" />
+    <None Include="Resources\Maplestory_Light.ttf" />
+    <None Include="Resources\NanumGothic.ttf" />
     <None Include="Resources\Olive_Young_Logo.svg.png" />
     <None Include="graph\01_동별_다중이용시설\none_data.png" />
     <None Include="graph\01_동별_다중이용시설\광산구_도산동.png" />

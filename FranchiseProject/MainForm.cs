@@ -86,25 +86,48 @@ namespace FranchiseProject
         // index 0: 프리텐다드 1: 메이플스토리 볼드
         public void SetFontList()
         {
-            SetFont(flatComboBox1, 0, 9);
-            SetFont(flatComboBox2, 0, 9);
-            SetFont(tabControl1, 0, 9);
-            SetFont(checkBox1, 0, 9);
-            SetFont(checkBox2, 0, 9);
-            SetFont(checkBox3, 0, 9);
-            SetFont(checkBox4, 0, 9);
-            SetFont(checkBox5, 0, 9);
-            SetFont(checkBox6, 0, 9);
-            SetFont(checkBox7, 0, 9);
-            SetFont(checkBox8, 0, 9);
-            SetFont(checkBox9, 0, 9);
-            SetFont(checkBox10, 0, 9);
-            SetFont(button2, 0, 9);
-            SetFont(button3, 0, 9);
-            SetFont(button4, 0, 9);
-            SetFont(resultButton, 1, 15);
-            SetFont(minimizeButton, 0, 9);
-            SetFont(exitButton, 0, 9);
+            flatComboBox1.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            flatComboBox2.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            tabControl1.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+
+            checkBox1.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox2.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox3.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox4.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox5.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox6.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox7.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox8.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox9.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox10.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+
+            button2.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            button3.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            button4.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+
+            resultButton.Font = new Font(FontManager.fontFamilys[1], 15, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            minimizeButton.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            exitButton.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+
+            //SetFont(flatComboBox1, 0, 9);
+            //SetFont(flatComboBox2, 0, 9);
+            //SetFont(tabControl1, 0, 9);
+            //SetFont(checkBox1, 0, 9);
+            //SetFont(checkBox2, 0, 9);
+            //SetFont(checkBox3, 0, 9);
+            //SetFont(checkBox4, 0, 9);
+            //SetFont(checkBox5, 0, 9);
+            //SetFont(checkBox6, 0, 9);
+            //SetFont(checkBox7, 0, 9);
+            //SetFont(checkBox8, 0, 9);
+            //SetFont(checkBox9, 0, 9);
+            //SetFont(checkBox10, 0, 9);
+            //SetFont(button2, 0, 9);
+            //SetFont(button3, 0, 9);
+            //SetFont(button4, 0, 9);
+            //SetFont(resultButton, 1, 15);
+            //SetFont(minimizeButton, 0, 9);
+            //SetFont(exitButton, 0, 9);
         }
 
         // DB
@@ -630,13 +653,14 @@ namespace FranchiseProject
                 interior_list.Add(interior_cost);
             }
 
-            int min_deposit = deposit_list.Min();
-            int max_deposit = deposit_list.Max();
-            int min_interior_cost = interior_list.Min();
-            int max_interior_cost = interior_list.Max();
+            int min_deposit = deposit_list.Count > 0 ? deposit_list.Min() : 0;
+            int max_deposit = deposit_list.Count > 0 ? deposit_list.Max() : 0;
+            int min_interior_cost = interior_list.Count > 0 ? interior_list.Min() : 0;
+            int max_interior_cost = interior_list.Count > 0 ? interior_list.Max() : 0;
 
             int total_min = franchise_cost + premium + furniture + system_cost + start_goods + work_cost + etc + min_deposit + min_interior_cost;
             int total_max = franchise_cost + premium + furniture + system_cost + start_goods + work_cost + etc + max_deposit + max_interior_cost;
+
             string min_cost = Formatwon(total_min); // 최종 최소 금액
             string max_cost = Formatwon(total_max); // 최종 최고 금액
 
