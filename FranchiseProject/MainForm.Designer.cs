@@ -155,7 +155,7 @@ namespace FranchiseProject
             this.button4.BackColor = System.Drawing.Color.White;
             this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(205)))), ((int)(((byte)(74)))));
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(289, 85);
+            this.button4.Location = new System.Drawing.Point(288, 86);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(76, 25);
             this.button4.TabIndex = 11;
@@ -187,7 +187,7 @@ namespace FranchiseProject
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(527, 409);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "부동산매매가";
+            this.tabPage1.Text = "부동산정보";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // listView2
@@ -278,7 +278,7 @@ namespace FranchiseProject
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(527, 409);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "인구";
+            this.tabPage2.Text = "인구비율";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // popPictureBox
@@ -384,7 +384,7 @@ namespace FranchiseProject
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Size = new System.Drawing.Size(527, 409);
             this.tabPage7.TabIndex = 6;
-            this.tabPage7.Text = "상가 분포도";
+            this.tabPage7.Text = "상가분포도";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // groupBox2

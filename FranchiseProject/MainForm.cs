@@ -108,28 +108,28 @@ namespace FranchiseProject
         // index 0: 프리텐다드 1: 메이플스토리 볼드
         public void SetFontList()
         {
-            flatComboBox1.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            flatComboBox2.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            tabControl1.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            flatComboBox1.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            flatComboBox2.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            tabControl1.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
 
-            checkBox1.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox2.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox3.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox4.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox5.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox6.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox7.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox8.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox9.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            checkBox10.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox1.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox2.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox3.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox4.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox5.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox6.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox7.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox8.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox9.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            checkBox10.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
 
-            button2.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            button3.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            button4.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            button2.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            button3.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            button4.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
 
             resultButton.Font = new Font(FontManager.fontFamilys[1], 15, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            minimizeButton.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
-            exitButton.Font = new Font(FontManager.fontFamilys[0], 9, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            minimizeButton.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            exitButton.Font = new Font(FontManager.fontFamilys[0], 10, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
 
             //SetFont(flatComboBox1, 0, 9);
             //SetFont(flatComboBox2, 0, 9);
@@ -691,6 +691,7 @@ namespace FranchiseProject
             string resultRate = result_[0]["RESULT_RATE"].ToString();
             string resultCnt = result_[0]["RESULT_CNT"].ToString(); // 해당동의 올리브영 갯수
 
+            // 경쟁업체 수 조회
             var competeColumns = new List<string> { "SALES_COMPETE" };
             var competeQuery = GetValuesFromMultipleColumns("TB_SALES", competeColumns, $"\"SALES_GU\" = '{gu}' AND \"SALES_DONG\" = '{dong}'", false);
             string resultCompete = competeQuery[0]["SALES_COMPETE"].ToString();
