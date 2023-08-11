@@ -12,17 +12,27 @@ namespace FranchiseProject
         private Point offset;
 
         // 생성자
-        public DialogForm(string GuName, string DongName, string minCost, string maxCost, string salesIncome, string salesPeople, string facilityCnt, string resultRate, string resultCnt)
+        public DialogForm(string guName,  // 구 이름
+                          string dongName,  // 동 이름
+                          string minCost,  // 최소 비용
+                          string maxCost,  // 최대 비용
+                          string salesIncome,  // 월 추정 매출
+                          string salesPeople,  // 유동 인구 수
+                          string facilityCnt,  // 다중 이용 시설 수
+                          string resultRate,  // 적합 등급
+                          string resultCnt,  // 올리브영 매장 수
+                          string resultCompete  // 경쟁 업체 수
+            )
         {
             InitializeComponent();
             SetGradePictureBox(resultRate);
-            regionNameLabel.Text = $"{GuName} {DongName} 지역의 분석 결과는...";
-            mainLabel.Text = $"월 추정매출: {salesIncome}만원 \n 유동인구: {salesPeople}명 \n 다중 이용 시설 수: {facilityCnt}개 \n 올리브영 매장 수: {resultCnt}";
+            regionNameLabel.Text = $"{guName} {dongName} 지역의 분석 결과는...";
+            mainLabel.Text = $"월 추정매출: {salesIncome}만원 \n 유동인구: {salesPeople}명 \n 다중 이용 시설 수: {facilityCnt}개 \n 경쟁업체 수: {resultCompete}개 \n 올리브영 매장 수: {resultCnt}개";
             finalLabel.Text = $"예상 창업 비용은 \n\n {minCost} ~ {maxCost}입니다.";
 
         }
 
-        // greadPictureBox에 들어갈 이미지와 폰트 색상을 등급에 따라 결정합니다.
+        // gradePictureBox에 들어갈 이미지와 폰트 색상을 등급에 따라 결정합니다.
         private void SetGradePictureBox(string resultRate)
         {
             int grade = int.Parse(resultRate[0].ToString());

@@ -17,7 +17,6 @@ namespace FranchiseProject
 {
     public partial class MainForm : Form
     {
-
         // 지역명, 위도, 경도  (ex. "문정동", "37.412412", "124.512512")
         List<Tuple<string, double, double>> tuples = new List<Tuple<string, double, double>>();
 
@@ -30,13 +29,15 @@ namespace FranchiseProject
         // 마우스 드래그를 위한 offset 변수
         private Point offset;
 
-        private string minCostValue;
-        private string maxCostValue;
-        private string salesIncome;
-        private string salesPeople;
-        private string facilityCnt;
-        private string resultRate;
-        private string resultCnt;
+        // 전역 변수
+        private string minCostValue_;
+        private string maxCostValue_;
+        private string salesIncome_;
+        private string salesPeople_;
+        private string facilityCnt_;
+        private string resultRate_;
+        private string resultCnt_;
+        private string resultCompete_;
 
         // 생성자
         public MainForm()
@@ -280,11 +281,11 @@ namespace FranchiseProject
         {
             // 첫 번째 콤보박스의 선택에 따라 두 번째 콤보박스의 항목을 설정
             string selectedGu = flatComboBox1.SelectedItem.ToString();
-            update_combobox2(selectedGu);
+            UpdateComboBox2(selectedGu);
             flatComboBox2.SelectedIndex = 0;
         }
 
-        private void update_combobox2(string guName)
+        private void UpdateComboBox2(string guName)
         {
             // 두 번째 콤보박스의 항목을 초기화
             flatComboBox2.Items.Clear();
@@ -296,7 +297,7 @@ namespace FranchiseProject
             }
         }
 
-        private void update_tabpage(string guName, string dongName)
+        private void UpdateTabPage(string guName, string dongName)
         {
             // 현재 comboBox2에서 선택된 동(Dong) 이름을 가져옴
             string dong = flatComboBox2.Text;
@@ -353,7 +354,7 @@ namespace FranchiseProject
             }
         }
 
-        private void update_picturebox(string guName, string dongName)
+        private void UpdatePictureBox(string guName, string dongName)
         {
             // 필요한 열 이름들을 리스트에 저장
             var columns = new List<string> { "GU_NAME", "H_DONG_NAME" };
@@ -496,8 +497,8 @@ namespace FranchiseProject
             string site = "https://dapi.kakao.com/v2/local/search/address.json";
             string query = string.Format("{0}?query={1}", site, area);
             WebRequest request = WebRequest.Create(query); // 요청 생성. 
-            string api_key = "106e805bafc9548f37b878db306c0484"; // API 인증키 입력. (각자 발급한 API 인증키를 입력하자)
-            string header = "KakaoAK " + api_key;
+            string apiKey = "106e805bafc9548f37b878db306c0484"; // API 인증키 입력. (각자 발급한 API 인증키를 입력하자)
+            string header = "KakaoAK " + apiKey;
 
 
             request.Headers.Add("Authorization", header); // HTTP 헤더 "Authorization" 에 header 값 설정. 
@@ -518,11 +519,11 @@ namespace FranchiseProject
 
             for (int i = 0; i < length; i++) // 지역명, 위도, 경도 읽어오기. 
             {
-                string address_name = docs[i]["address_name"];
+                string addressName = docs[i]["address_name"];
                 double x = double.Parse(docs[i]["x"]); // 위도
                 double y = double.Parse(docs[i]["y"]); // 경도
-                tuples.Add(new Tuple<string, double, double>(address_name, x, y));
-                Console.WriteLine("저장한주소값: " + address_name + x + y);
+                tuples.Add(new Tuple<string, double, double>(addressName, x, y));
+                Console.WriteLine("저장한주소값: " + addressName + x + y);
             }
         }
 
@@ -547,7 +548,7 @@ namespace FranchiseProject
             tuples.Clear();
             string gu = flatComboBox1.Text;
             string dong = flatComboBox2.Text;
-            string new_addr = "광주광역시 " + gu + dong;
+            string newAddr = "광주광역시 " + gu + dong;
 
             if (gu == "선택" | dong == "선택")
             {
@@ -559,14 +560,14 @@ namespace FranchiseProject
             clickDetected = true;
 
             // 튜플에 값 넣기
-            Search(new_addr);
+            Search(newAddr);
             var sel = tuples[0];
 
             // 위도, 경도 불러와서 이동
             object[] arr = new object[] { sel.Item3, sel.Item2 }; // 위도, 경도
             object res = webBrowser1.Document.InvokeScript("panTo", arr);
-            update_tabpage(gu, dong);
-            update_picturebox(gu, dong);
+            UpdateTabPage(gu, dong);
+            UpdatePictureBox(gu, dong);
 
             // 올리브영 위치 찍기
             var columns = new List<string> { "LOC_NAME", "LOC_ADDR", "LOC_X", "LOC_Y" };
@@ -600,17 +601,17 @@ namespace FranchiseProject
             }
 
             // 버스 위치 찍기
-            var bus_columns = new List<string> { "BUS_NAME", "BUS_ADDR", "BUS_X", "BUS_Y" };
-            var bus_condition = $"\"BUS_GU\" = '{gu}' AND \"BUS_DONG\" = \'{dong}\'";
+            var busColumns = new List<string> { "BUS_NAME", "BUS_ADDR", "BUS_X", "BUS_Y" };
+            var busCondition = $"\"BUS_GU\" = '{gu}' AND \"BUS_DONG\" = \'{dong}\'";
 
-            var bus_data = GetValuesFromMultipleColumns("TB_BUS", bus_columns, bus_condition, false);
-            StringBuilder bus_jsCode = new StringBuilder();
-            bus_jsCode.AppendLine($"remove_markers('bus');");
+            var busData = GetValuesFromMultipleColumns("TB_BUS", busColumns, busCondition, false);
+            StringBuilder busJsCode = new StringBuilder();
+            busJsCode.AppendLine($"remove_markers('bus');");
 
-            if (bus_data != null && bus_data.Count > 0)
+            if (busData != null && busData.Count > 0)
             {
-                bus_jsCode.AppendLine($"add_markers('bus', [");
-                foreach (var row in bus_data)
+                busJsCode.AppendLine($"add_markers('bus', [");
+                foreach (var row in busData)
                 {
                     string name = row["BUS_NAME"].ToString(); // 업체명
                     string addr = row["BUS_ADDR"].ToString();  // 주소 
@@ -619,85 +620,90 @@ namespace FranchiseProject
                     Console.WriteLine(name + addr + x + y); // 확인용
 
                     // 각 시설의 정보를 바탕으로 JavaScript 코드를 추가
-                    bus_jsCode.AppendLine($"{{ title: '{name}', addr: '{addr}', latlng: new kakao.maps.LatLng({x}, {y}) }},");
+                    busJsCode.AppendLine($"{{ title: '{name}', addr: '{addr}', latlng: new kakao.maps.LatLng({x}, {y}) }},");
                 }
-                bus_jsCode.AppendLine("]);");
-                Console.WriteLine(bus_jsCode.ToString());
+                busJsCode.AppendLine("]);");
+                Console.WriteLine(busJsCode.ToString());
 
                 // 생성된 JavaScript 코드를 웹 브라우저 컨트롤을 통해 실행
-                webBrowser1.Document.InvokeScript("eval", new object[] { bus_jsCode.ToString() });
+                webBrowser1.Document.InvokeScript("eval", new object[] { busJsCode.ToString() });
             }
 
             SetFontList();
 
             //예상 창업 비용 작업 완
-            var columns_deal = new List<string> { "DEAL_DEPOSIT", "DEAL_RENT_PRICE", "DEAL_SPACE" };
-            var condition_deal = $"\"DEAL_TYPE\" = \'월세\' and \"DEAL_DONG\" = \'{dong}\'";
-            var data_deal = GetValuesFromMultipleColumns("TB_DEAL", columns_deal, condition_deal, false);
-            int franchise_cost = 1100; // 가맹비
+            var columnsDeal = new List<string> { "DEAL_DEPOSIT", "DEAL_RENT_PRICE", "DEAL_SPACE" };
+            var conditionDeal = $"\"DEAL_TYPE\" = \'월세\' and \"DEAL_DONG\" = \'{dong}\'";
+            var dataDeal = GetValuesFromMultipleColumns("TB_DEAL", columnsDeal, conditionDeal, false);
+            int franchiseCost = 1100; // 가맹비
             int premium = 10000; // 권리금
             int furniture = 13000; // 집기비용
-            int system_cost = 1000; // 전산비용
-            int start_goods = 10000; // 초도상품구매비용
-            int work_cost = 1200; // 공사비
+            int systemCost = 1000; // 전산비용
+            int startGoods = 10000; // 초도상품구매비용
+            int workCost = 1200; // 공사비
             int etc = 200; // 기타
             int deposit = 0; // 보증금
-            int rent_price = 0; // 임대료
+            int rentPrice = 0; // 임대료
             float space = 0; // 면적
-            int interior_cost = 0; // 인테리어비 면적 // 3.3 * 198
+            int interiorCost = 0; // 인테리어비 면적 // 3.3 * 198
 
-            List<int> deposit_list = new List<int>();
-            List<int> interior_list = new List<int>();
-            foreach (var row in data_deal)
+            List<int> depositList = new List<int>();
+            List<int> interiorList = new List<int>();
+            foreach (var row in dataDeal)
             {
                 deposit = Convert.ToInt32(row["DEAL_DEPOSIT"]);
-                rent_price = Convert.ToInt32(row["DEAL_RENT_PRICE"]);
+                rentPrice = Convert.ToInt32(row["DEAL_RENT_PRICE"]);
                 space = Convert.ToSingle(row["DEAL_SPACE"]);
                 double result = space / 3.3 * 198;
-                interior_cost = Convert.ToInt32(result);
-                deposit_list.Add(deposit);
-                interior_list.Add(interior_cost);
+                interiorCost = Convert.ToInt32(result);
+                depositList.Add(deposit);
+                interiorList.Add(interiorCost);
             }
 
-            int min_deposit = deposit_list.Count > 0 ? deposit_list.Min() : 0;
-            int max_deposit = deposit_list.Count > 0 ? deposit_list.Max() : 0;
-            int min_interior_cost = interior_list.Count > 0 ? interior_list.Min() : 0;
-            int max_interior_cost = interior_list.Count > 0 ? interior_list.Max() : 0;
+            int minDeposit = depositList.Count > 0 ? depositList.Min() : 0;
+            int maxDeposit = depositList.Count > 0 ? depositList.Max() : 0;
+            int minInteriorCost = interiorList.Count > 0 ? interiorList.Min() : 0;
+            int maxInteriorCost = interiorList.Count > 0 ? interiorList.Max() : 0;
 
-            int total_min = franchise_cost + premium + furniture + system_cost + start_goods + work_cost + etc + min_deposit + min_interior_cost;
-            int total_max = franchise_cost + premium + furniture + system_cost + start_goods + work_cost + etc + max_deposit + max_interior_cost;
+            int totalMin = franchiseCost + premium + furniture + systemCost + startGoods + workCost + etc + minDeposit + minInteriorCost;
+            int totalMax = franchiseCost + premium + furniture + systemCost + startGoods + workCost + etc + maxDeposit + maxInteriorCost;
 
-            string min_cost = Formatwon(total_min); // 최종 최소 금액
-            string max_cost = Formatwon(total_max); // 최종 최고 금액
+            string minCost = FormatWon(totalMin); // 최종 최소 금액
+            string maxCost = FormatWon(totalMax); // 최종 최고 금액
 
             // ↓ 월평균매출, 유동인구 로직
             string condition1 = $"\"FACILITY_GU\" = '{gu}' AND \"FACILITY_DONG\" = '{dong}'";
-            var faciltiy_data = GetAllRowsFromTable("TB_FACILITY", condition1);
-            int facility_cnt = faciltiy_data.Count(); // 다중이용시설 갯수
+            var faciltiyData = GetAllRowsFromTable("TB_FACILITY", condition1);
+            int facilityCnt = faciltiyData.Count(); // 다중이용시설 갯수
 
-            var salses_columns = new List<string> { "SALES_INCOME", "SALES_PEOPLE" };
-            var sales_con = $"\"SALES_GU\" = '{gu}' AND \"SALES_DONG\" = '{dong}'";
-            var sales_data = GetValuesFromMultipleColumns("TB_SALES", salses_columns, sales_con, false);
+            var salsesColumns = new List<string> { "SALES_INCOME", "SALES_PEOPLE" };
+            var salesCon = $"\"SALES_GU\" = '{gu}' AND \"SALES_DONG\" = '{dong}'";
+            var salesData = GetValuesFromMultipleColumns("TB_SALES", salsesColumns, salesCon, false);
 
             // 월평균매출, 유동인구
-            string sales_income = sales_data[0]["SALES_INCOME"].ToString(); // 월평균매출 
-            string sales_people = sales_data[0]["SALES_PEOPLE"].ToString(); // 유동인구
+            string salesIncome = salesData[0]["SALES_INCOME"].ToString(); // 월평균매출 
+            string salesPeople = salesData[0]["SALES_PEOPLE"].ToString(); // 유동인구
 
             // 데이터 정규화 및 추천 기능 테이블
             // List<string> Result = GetValuesFromTable("TB_RESULT", "RESULT_RATE", $"\"RESULT_GU\" = '{gu}' AND \"RESULT_DONG\" = '{dong}'", false);
-            var result_columns = new List<string> { "RESULT_RATE", "RESULT_CNT" };
-            var Result = GetValuesFromMultipleColumns("TB_RESULT", result_columns, $"\"RESULT_GU\" = '{gu}' AND \"RESULT_DONG\" = '{dong}'", false);
-            string result_rate = Result[0]["RESULT_RATE"].ToString();
-            string result_cnt = Result[0]["RESULT_CNT"].ToString(); // 해당동의 올리브영 갯수
+            var resultColumns = new List<string> { "RESULT_RATE", "RESULT_CNT" };
+            var result_ = GetValuesFromMultipleColumns("TB_RESULT", resultColumns, $"\"RESULT_GU\" = '{gu}' AND \"RESULT_DONG\" = '{dong}'", false);
+            string resultRate = result_[0]["RESULT_RATE"].ToString();
+            string resultCnt = result_[0]["RESULT_CNT"].ToString(); // 해당동의 올리브영 갯수
+
+            var competeColumns = new List<string> { "SALES_COMPETE" };
+            var competeQuery = GetValuesFromMultipleColumns("TB_SALES", competeColumns, $"\"SALES_GU\" = '{gu}' AND \"SALES_DONG\" = '{dong}'", false);
+            string resultCompete = competeQuery[0]["SALES_COMPETE"].ToString();
 
             // 전역 변수에 할당
-            minCostValue = min_cost;
-            maxCostValue = max_cost;
-            salesIncome = sales_income;
-            salesPeople = sales_people;
-            facilityCnt = facility_cnt.ToString();
-            resultRate = result_rate;
-            resultCnt = result_cnt;
+            minCostValue_ = minCost;
+            maxCostValue_ = maxCost;
+            salesIncome_ = salesIncome;
+            salesPeople_ = salesPeople;
+            facilityCnt_ = facilityCnt.ToString();
+            resultRate_ = resultRate;
+            resultCnt_ = resultCnt;
+            resultCompete_ = resultCompete;
 
             // 체크박스 비활성화 설정
             checkBox1.Checked = false;
@@ -714,7 +720,7 @@ namespace FranchiseProject
         }
 
         // ~억 ~만원 이라고 표현해주는 함수
-        static string Formatwon(int price)
+        static string FormatWon(int price)
         {
             int eok = price / 10000;
             int man = (price / 10);
@@ -723,7 +729,7 @@ namespace FranchiseProject
         }
 
         // 체크박스의 상태(선택/해제)에 따라 지도 상에 마커를 표시하거나 삭제
-        private void show_checkbox_markers(CheckBox checkBox)
+        private void ShowCheckBoxMarkers(CheckBox checkBox)
         {
             List<Dictionary<string, object>> facility_rows = GetFacilitiesByTypeAndLocation(checkBox, flatComboBox1, flatComboBox2);
 
@@ -807,7 +813,7 @@ namespace FranchiseProject
                 string guName = flatComboBox1.Text;
                 string dongName = flatComboBox2.Text;
 
-                DialogForm dialogForm = new DialogForm(guName, dongName, minCostValue, maxCostValue, salesIncome, salesPeople, facilityCnt, resultRate, resultCnt);
+                DialogForm dialogForm = new DialogForm(guName, dongName, minCostValue_, maxCostValue_, salesIncome_, salesPeople_, facilityCnt_, resultRate_, resultCnt_, resultCompete_);
                 dialogForm.ShowDialog();
             }
 
@@ -827,62 +833,61 @@ namespace FranchiseProject
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             //편의점
-            show_checkbox_markers(sender as CheckBox);
-
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             //카페
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
             //은행
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             //쇼핑몰
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
             //병원
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
         {
             //음식점
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox7_CheckedChanged(object sender, EventArgs e)
         {
             //공용주차장
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox8_CheckedChanged(object sender, EventArgs e)
         {
             // 중 고등학교
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox9_CheckedChanged(object sender, EventArgs e)
         {
             // 대학교
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void checkBox10_CheckedChanged(object sender, EventArgs e)
         {
             //문화시설
-            show_checkbox_markers(sender as CheckBox);
+            ShowCheckBoxMarkers(sender as CheckBox);
         }
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
