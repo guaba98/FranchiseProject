@@ -35,12 +35,30 @@ namespace FranchiseProject
         private string salesIncome;
         private string salesPeople;
         private string facilityCnt;
+        private string resultRate;
+        private string resultCnt;
 
         // 생성자
         public MainForm()
         {
             InitializeComponent();
             InitializeComboBoxes();
+        }
+
+        // 지도
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            SetFontList();
+            // 로드될 때 생성
+            // WebBrowser 컨트롤에 "kakaoMap.html" 을 표시한다. 
+            Version ver = webBrowser1.Version;
+            string name = webBrowser1.ProductName;
+            string str = webBrowser1.ProductVersion;
+            string html = "kakaoMap.html";
+            string dir = Directory.GetCurrentDirectory();
+            string path = Path.Combine(dir, html);
+            webBrowser1.Navigate(path);
+            SetFontList();
         }
 
         // 메인폼 테두리 설정
@@ -165,6 +183,7 @@ namespace FranchiseProject
 
             return results;
         }
+        
         // 특정 테이블의 여러 컬럼 값을 반환할 
         public static List<Dictionary<string, object>> GetValuesFromMultipleColumns(string tableName, List<string> columnNames, string criteria = null, bool distinct = false)
         {
@@ -202,6 +221,7 @@ namespace FranchiseProject
 
             return results;
         }
+        
         // 특정 테이블의 모든 행의 값을 반환하는 함수
         public static List<Dictionary<string, object>> GetAllRowsFromTable(string tableName, string criteria = null)
         {
@@ -238,7 +258,6 @@ namespace FranchiseProject
             return results;
         }
 
-
         // 콤보박스
         private void InitializeComboBoxes()
         {
@@ -264,7 +283,6 @@ namespace FranchiseProject
             update_combobox2(selectedGu);
             flatComboBox2.SelectedIndex = 0;
         }
-
 
         private void update_combobox2(string guName)
         {
@@ -436,7 +454,7 @@ namespace FranchiseProject
         }
 
         // 주어진 폴더 경로와 파일 이름을 기반으로 이미지 파일의 전체 경로를 생성하는 함수
-        string GetImagePath(string folderPath, string fileName)
+        private string GetImagePath(string folderPath, string fileName)
         {
             // 상대 경로를 가져옴
             string currentDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
@@ -444,7 +462,6 @@ namespace FranchiseProject
             // Path.Combine 메서드를 사용하여 현재 디렉토리, 폴더 경로, 파일 이름을 결합하여 이미지 파일의 전체 경로를 반환함
             return Path.Combine(currentDirectory, folderPath, fileName);
         }
-
 
         // 주어진 기본 폴더 경로(baseFolderPath), 구이름(guName), 동이름(dongName)에 맞는 이미지 파일들을 찾아서 리스트로 반환
         private List<string> GetMatchingImageFiles(string baseFolderPath, string guName, string dongName)
@@ -472,23 +489,8 @@ namespace FranchiseProject
             return imageFiles;
         }
 
-        // 지도
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            SetFontList();
-            // 로드될 때 생성
-            // WebBrowser 컨트롤에 "kakaoMap.html" 을 표시한다. 
-            Version ver = webBrowser1.Version;
-            string name = webBrowser1.ProductName;
-            string str = webBrowser1.ProductVersion;
-            string html = "kakaoMap.html";
-            string dir = Directory.GetCurrentDirectory();
-            string path = Path.Combine(dir, html);
-            webBrowser1.Navigate(path);
-            SetFontList();
-        }
-
-        public void Search(string area) // 지역 검색
+        // 지역 검색
+        public void Search(string area)
         {
             // 요청을 보낼 url 
             string site = "https://dapi.kakao.com/v2/local/search/address.json";
@@ -524,21 +526,22 @@ namespace FranchiseProject
             }
         }
 
-
-        // 지도 확대 축소
-        private void button2_Click(object sender, EventArgs e)
+        // 지도 확대
+        private void ZoomInMap(object sender, EventArgs e)
         {
             webBrowser1.Document.InvokeScript("zoomIn"); // 줌인
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        // 지도 축소
+        private void ZoomOutMap(object sender, EventArgs e)
         {
             webBrowser1.Document.InvokeScript("zoomOut"); // 줌아웃
         }
 
         // 검색 버튼 눌렀을 때 연결
-        private void button4_Click(object sender, EventArgs e)
+        private void SearchButtonClick(object sender, EventArgs e)
         {
+            tabControl1.SelectedIndex = 0;
             SetFontList();
             //정보 불러오기
             tuples.Clear();
@@ -667,7 +670,6 @@ namespace FranchiseProject
             string min_cost = Formatwon(total_min); // 최종 최소 금액
             string max_cost = Formatwon(total_max); // 최종 최고 금액
 
-
             // ↓ 월평균매출, 유동인구 로직
             string condition1 = $"\"FACILITY_GU\" = '{gu}' AND \"FACILITY_DONG\" = '{dong}'";
             var faciltiy_data = GetAllRowsFromTable("TB_FACILITY", condition1);
@@ -681,14 +683,23 @@ namespace FranchiseProject
             string sales_income = sales_data[0]["SALES_INCOME"].ToString(); // 월평균매출 
             string sales_people = sales_data[0]["SALES_PEOPLE"].ToString(); // 유동인구
 
+            // 데이터 정규화 및 추천 기능 테이블
+            // List<string> Result = GetValuesFromTable("TB_RESULT", "RESULT_RATE", $"\"RESULT_GU\" = '{gu}' AND \"RESULT_DONG\" = '{dong}'", false);
+            var result_columns = new List<string> { "RESULT_RATE", "RESULT_CNT" };
+            var Result = GetValuesFromMultipleColumns("TB_RESULT", result_columns, $"\"RESULT_GU\" = '{gu}' AND \"RESULT_DONG\" = '{dong}'", false);
+            string result_rate = Result[0]["RESULT_RATE"].ToString();
+            string result_cnt = Result[0]["RESULT_CNT"].ToString(); // 해당동의 올리브영 갯수
+
             // 전역 변수에 할당
             minCostValue = min_cost;
             maxCostValue = max_cost;
             salesIncome = sales_income;
             salesPeople = sales_people;
             facilityCnt = facility_cnt.ToString();
+            resultRate = result_rate;
+            resultCnt = result_cnt;
 
-
+            // 체크박스 비활성화 설정
             checkBox1.Checked = false;
             checkBox2.Checked = false;
             checkBox3.Checked = false;
@@ -711,9 +722,8 @@ namespace FranchiseProject
             return $"{eok}억 {man}만원";
         }
 
-
         // 체크박스의 상태(선택/해제)에 따라 지도 상에 마커를 표시하거나 삭제
-        private void show_checkbox_markers(System.Windows.Forms.CheckBox checkBox)
+        private void show_checkbox_markers(CheckBox checkBox)
         {
             List<Dictionary<string, object>> facility_rows = GetFacilitiesByTypeAndLocation(checkBox, flatComboBox1, flatComboBox2);
 
@@ -780,6 +790,39 @@ namespace FranchiseProject
             return GetAllRowsFromTable("TB_FACILITY", condition);
         }
 
+        private void resultButton_Click(object sender, EventArgs e)
+        {
+            if (flatComboBox1.Text == "선택" || flatComboBox2.Text == "선택")
+            {
+                MessageBox.Show("구와 동을 선택해주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            else if (clickDetected == false)
+            {
+                MessageBox.Show("검색 버튼을 클릭해주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            else
+            {
+                string guName = flatComboBox1.Text;
+                string dongName = flatComboBox2.Text;
+
+                DialogForm dialogForm = new DialogForm(guName, dongName, minCostValue, maxCostValue, salesIncome, salesPeople, facilityCnt, resultRate, resultCnt);
+                dialogForm.ShowDialog();
+            }
+
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
         // 다중이용시설 체크박스 이벤트 연결
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -840,39 +883,6 @@ namespace FranchiseProject
         {
             //문화시설
             show_checkbox_markers(sender as CheckBox);
-        }
-
-        private void resultButton_Click(object sender, EventArgs e)
-        {
-            if (flatComboBox1.Text == "선택" || flatComboBox2.Text == "선택")
-            {
-                MessageBox.Show("구와 동을 선택해주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            else if (clickDetected == false)
-            {
-                MessageBox.Show("검색 버튼을 클릭해주세요!", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            else
-            {
-                string guName = flatComboBox1.Text;
-                string dongName = flatComboBox2.Text;
-
-                DialogForm dialogForm = new DialogForm(guName, dongName, minCostValue, maxCostValue, salesIncome, salesPeople, facilityCnt);
-                dialogForm.ShowDialog();
-            }
-
-        }
-
-        private void exitButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
         }
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)

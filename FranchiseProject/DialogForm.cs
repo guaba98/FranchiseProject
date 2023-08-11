@@ -12,12 +12,26 @@ namespace FranchiseProject
         private Point offset;
 
         // 생성자
-        public DialogForm(string GuName, string DongName, string minCost, string maxCost, string salesIncome, string salesPeople, string facilityCnt)
+        public DialogForm(string GuName, string DongName, string minCost, string maxCost, string salesIncome, string salesPeople, string facilityCnt, string resultRate, string resultCnt)
         {
             InitializeComponent();
+            SetGradePictureBox(resultRate);
             regionNameLabel.Text = $"{GuName} {DongName} 지역의 분석 결과는...";
-            mainLabel.Text = $"월 추정매출은 {salesIncome}만원 \n\n 유동인구는 {salesPeople}명 \n\n 다중 이용 시설 개수는 {facilityCnt}개";
+            mainLabel.Text = $"월 추정매출: {salesIncome}만원 \n 유동인구: {salesPeople}명 \n 다중 이용 시설 수: {facilityCnt}개 \n 올리브영 매장 수: {resultCnt}";
             finalLabel.Text = $"예상 창업 비용은 \n\n {minCost} ~ {maxCost}입니다.";
+
+        }
+
+        // greadPictureBox에 들어갈 이미지와 폰트 색상을 등급에 따라 결정합니다.
+        private void SetGradePictureBox(string resultRate)
+        {
+            int grade = int.Parse(resultRate[0].ToString());
+            gradePictureBox.Image = Properties.Resources.ResourceManager.GetObject($"_{grade}") as Image;
+
+            // 0등급은 블랙 ~ 5등급 레드
+            Color[] gradeColors = { Color.Black,  Color.Green, Color.LightGreen, Color.Orange, Color.OrangeRed, Color.Red };
+            rateLabel.ForeColor = gradeColors[grade];
+            rateLabel.Text = $"창업 적합도: {resultRate}";
         }
 
         // 닫기 버튼 함수
@@ -40,6 +54,7 @@ namespace FranchiseProject
         {
             dialogTitleLabel.Font = new Font(FontManager.fontFamilys[0], 20, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
             regionNameLabel.Font = new Font(FontManager.fontFamilys[0], 15, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
+            rateLabel.Font = new Font(FontManager.fontFamilys[0], 15, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));
             mainLabel.Font = new Font(FontManager.fontFamilys[0], 13, FontStyle.Regular, GraphicsUnit.Point, ((byte)(129)));
             finalLabel.Font = new Font(FontManager.fontFamilys[0], 13, FontStyle.Bold, GraphicsUnit.Point, ((byte)(129)));
         }

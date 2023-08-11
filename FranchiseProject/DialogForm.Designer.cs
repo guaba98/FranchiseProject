@@ -34,7 +34,10 @@
             this.regionNameLabel = new System.Windows.Forms.Label();
             this.mainLabel = new System.Windows.Forms.Label();
             this.finalLabel = new System.Windows.Forms.Label();
+            this.rateLabel = new System.Windows.Forms.Label();
+            this.gradePictureBox = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gradePictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -45,7 +48,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(396, 83);
+            this.panel1.Size = new System.Drawing.Size(396, 74);
             this.panel1.TabIndex = 0;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
@@ -64,7 +67,7 @@
             // 
             // dialogTitleLabel
             // 
-            this.dialogTitleLabel.Location = new System.Drawing.Point(99, 23);
+            this.dialogTitleLabel.Location = new System.Drawing.Point(99, 19);
             this.dialogTitleLabel.Name = "dialogTitleLabel";
             this.dialogTitleLabel.Size = new System.Drawing.Size(197, 39);
             this.dialogTitleLabel.TabIndex = 1;
@@ -73,7 +76,7 @@
             // 
             // regionNameLabel
             // 
-            this.regionNameLabel.Location = new System.Drawing.Point(31, 124);
+            this.regionNameLabel.Location = new System.Drawing.Point(31, 97);
             this.regionNameLabel.Name = "regionNameLabel";
             this.regionNameLabel.Size = new System.Drawing.Size(337, 39);
             this.regionNameLabel.TabIndex = 2;
@@ -82,31 +85,51 @@
             // 
             // mainLabel
             // 
-            this.mainLabel.Location = new System.Drawing.Point(31, 202);
+            this.mainLabel.Location = new System.Drawing.Point(31, 251);
             this.mainLabel.Name = "mainLabel";
-            this.mainLabel.Size = new System.Drawing.Size(337, 129);
+            this.mainLabel.Size = new System.Drawing.Size(337, 117);
             this.mainLabel.TabIndex = 3;
             this.mainLabel.Text = "mainLabel";
             this.mainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // finalLabel
             // 
-            this.finalLabel.Location = new System.Drawing.Point(31, 374);
+            this.finalLabel.Location = new System.Drawing.Point(31, 388);
             this.finalLabel.Name = "finalLabel";
-            this.finalLabel.Size = new System.Drawing.Size(337, 68);
+            this.finalLabel.Size = new System.Drawing.Size(337, 76);
             this.finalLabel.TabIndex = 4;
             this.finalLabel.Text = "finalLabel";
             this.finalLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // rateLabel
+            // 
+            this.rateLabel.Location = new System.Drawing.Point(31, 200);
+            this.rateLabel.Name = "rateLabel";
+            this.rateLabel.Size = new System.Drawing.Size(337, 42);
+            this.rateLabel.TabIndex = 5;
+            this.rateLabel.Text = "rateLabel";
+            this.rateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // gradePictureBox
+            // 
+            this.gradePictureBox.Location = new System.Drawing.Point(169, 139);
+            this.gradePictureBox.Name = "gradePictureBox";
+            this.gradePictureBox.Size = new System.Drawing.Size(60, 60);
+            this.gradePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.gradePictureBox.TabIndex = 6;
+            this.gradePictureBox.TabStop = false;
             // 
             // DialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 500);
+            this.Controls.Add(this.rateLabel);
             this.Controls.Add(this.finalLabel);
             this.Controls.Add(this.mainLabel);
             this.Controls.Add(this.regionNameLabel);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.gradePictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "DialogForm";
             this.Padding = new System.Windows.Forms.Padding(2);
@@ -117,6 +140,7 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DialogForm_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DialogForm_MouseMove);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gradePictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -129,5 +153,7 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Label mainLabel;
         private System.Windows.Forms.Label finalLabel;
+        private System.Windows.Forms.Label rateLabel;
+        private System.Windows.Forms.PictureBox gradePictureBox;
     }
 }

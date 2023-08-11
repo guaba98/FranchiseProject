@@ -301,6 +301,11 @@
     <None Include="graph\01_동별_다중이용시설\서구_화정3동.png" />
     <None Include="graph\01_동별_다중이용시설\서구_화정4동.png" />
     <None Include="graph\02_동별_인구비율\광산구_도산동.png" />
+    <None Include="img\5.png" />
+    <None Include="img\4.png" />
+    <None Include="img\1.png" />
+    <None Include="img\2.png" />
+    <None Include="img\3.png" />
     <Content Include="kakaoMap.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
